@@ -374,11 +374,22 @@ function preload(){
 
 
     $.get( "./data/pol_sp_ilha.geojson", function( data ) {
-        console.log(data,"buildings_loaded_hidden")
-        $("#buildings_loaded_hidden").val(data)
+        if (typeof(data)=="string"){
+            $("#buildings_loaded_hidden").val(data)
+        }else if(typeof(data)=="object"){
+            $("#buildings_loaded_hidden").val(JSON.stringify(data))
+        }else{
+            console.log("buildings",data)
+        }
+        
         $.get( "./data/antena_sp_ilha.geojson", function( data ) {
-            console.log(data,"antenna_loaded_hidden")
-            $("#antenna_loaded_hidden").val(data)
+            if (typeof(data)=="string"){
+                $("#antenna_loaded_hidden").val(data)
+            }else if(typeof(data)=="object"){
+                $("#antenna_loaded_hidden").val(JSON.stringify(data))
+            }else{
+                console.log("antena",data)
+            }
 
             btn_update_buildings()
             btn_update_antenna()

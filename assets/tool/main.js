@@ -374,8 +374,10 @@ function preload(){
 
 
     $.get( "./data/pol_sp_ilha.geojson", function( data ) {
+        console.log(data,"buildings_loaded_hidden")
         $("#buildings_loaded_hidden").val(data)
         $.get( "./data/antena_sp_ilha.geojson", function( data ) {
+            console.log(data,"antenna_loaded_hidden")
             $("#antenna_loaded_hidden").val(data)
 
             btn_update_buildings()

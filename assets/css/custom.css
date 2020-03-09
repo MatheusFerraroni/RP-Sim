@@ -1,0 +1,51 @@
+
+
+
+#logo{
+    width: 232px;
+}
+
+#logo_holder{
+    padding: 0px;
+}
+
+
+.main_summary{
+
+    width: 400px;
+    height: 100%;
+    background-color: #cccccc;
+    position: fixed;
+    float: right;
+    right: 0px;
+    overflow: auto;
+}
+
+.icon_cog{
+    font-size: 22px;
+}
+
+.holder_info_buildings{
+    max-height: 400px;
+    overflow: auto;
+}
+
+.holder_propagation_model{
+    max-height: 600px;
+    overflow: auto;
+}
+
+.holder_list_propagation{
+    max-height: 200px;
+    overflow: auto;
+}
+
+.chkbox_enable_propagation{
+    font-size: 16px;
+}
+
+
+#canvas_holder{
+    margin-top: 56px;
+    width: calc(100% - 400px);
+}

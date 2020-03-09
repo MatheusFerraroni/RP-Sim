@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+    <html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="shortcut icon" href="./assets/images/favlogo.png" />
+
+        <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+          <link href="./assets/css/all.css" rel="stylesheet"> <!--load all styles -->
+
+        <link rel="stylesheet" href="./assets/css/custom.css">
+        <title>RP-Sim</title>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+            <a class="navbar-brand mr-auto mr-lg-0" id="logo_holder"><img id="logo" src="./assets/images/logo.png" alt="Italian Trulli"></a>
+
+
+            <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#" id="btn_calculate_signal">Recalculate</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="salvarImagem()">Salvar Figura</span></a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-expanded="false">Extra</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown01">
+                            <a class="dropdown-item" href="#" id="bigline"> <i class="far fa-square" id="biglinecheck"></i> Big Lines</a>
+                            <a class="dropdown-item" href="#" id="showbuildings"> <i class="far fa-check-square" id="showbuildingscheck"></i> Show Buildings</a>
+                            <a class="dropdown-item" href="#" id="showantenas"> <i class="far fa-check-square" id="showantenascheck"></i> Show Anetenas</a>
+                            <a class="dropdown-item" href="#" id="whitebackground"> <i class="far fa-square" id="whitebackgroundcheck"></i> White Background</a>
+                            <a class="dropdown-item" href="#" id="mousesignal"> <i class="far fa-square" id="mousesignalcheck"></i> Mouse Signal</a>
+                            <hr>
+                            <a class="dropdown-item" href="#" id="exportimage"> Export Image </a>
+                            <a class="dropdown-item" href="#" id="centermap"> Center Map </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+
+            <div id="canvas_holder" style="margin-top: 56px">
+            </div>
+
+
+
+        <div class="main_summary">
+                
+
+
+            <div class="m-2 p-2 bg-white rounded">
+                <button type="button" class="close" data-toggle="modal" data-target="#modal_environment">
+                    <span><i class="fas fa-cog icon_cog"></i></span>
+                </button>
+                <h6 class="border-bottom border-gray pb-2 mb-0">Environment</h6>
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="media text-muted pt-1">
+                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
+                                <strong class="d-block text-gray-dark">Temperature</strong>
+                                <a id="temperature_main_disp">0</a> º C
+                            </p>
+                        </div>
+                        <div class="media text-muted pt-1">
+                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
+                                <strong class="d-block text-gray-dark">Noise Figure</strong>
+                                <a id="noise_figure_main_display">0</a> DB
+                            </p>
+                        </div>
+                        <div class="media text-muted pt-1">
+                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
+                                <strong class="d-block text-gray-dark">Total Check Points</strong>
+                                <a id="total_check_points_display">0</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="media text-muted pt-1">
+                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
+                                <strong class="d-block text-gray-dark">Receiver Height</strong>
+                                <a id="receiver_height_main_display">0</a> m
+                            </p>
+                        </div>
+                        <div class="media text-muted pt-1">
+                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
+                                <strong class="d-block text-gray-dark">Distance Checks</strong>
+                                <a id="distance_check_display">0</a> <a>m</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="m-2 p-2 bg-white rounded">
+
+                <button type="button" class="close" data-toggle="modal" data-target="#modal_communication">
+                    <span><i class="fas fa-cog icon_cog"></i></span>
+                </button>
+                <h6 class="border-bottom border-gray pb-2 mb-0">Communication</h6>
+
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="media text-muted pt-1">
+                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
+                                <strong class="d-block text-gray-dark">Frequency</strong>
+                                <a id="frequency_main_label">0</a> Mhz
+                            </p>
+                        </div>
+                        <div class="media text-muted pt-1">
+                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
+                                <strong class="d-block text-gray-dark">Transmission Gain</strong>
+                                <a id="gtx_main_label">0</a> DBm
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="media text-muted pt-1">
+                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
+                                <strong class="d-block text-gray-dark">Transmission Power</strong>
+                                <a id="ptx_main_label">0</a> DB
+                            </p>
+                        </div>
+                        <div class="media text-muted pt-1">
+                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
+                                <strong class="d-block text-gray-dark">Reception Gain</strong>
+                                <a id="grx_main_label">0</a> DB
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="m-2 p-2 bg-white rounded">
+                <button type="button" class="close" data-toggle="modal" data-target="#modal_buildings">
+                    <span><i class="fas fa-cog icon_cog"></i></span>
+                </button>
+                <h6 class="border-bottom border-gray pb-2 mb-0">Buildings</h6>
+
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="media text-muted pt-1">
+                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
+                                <strong class="d-block text-gray-dark">Total</strong>
+                                <a id="total_buildings_main">0</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="media text-muted pt-1">
+                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
+                                <strong class="d-block text-gray-dark">Total Cordinates</strong>
+                                <a id="total_buildings_cords_main">0</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="m-2 p-2 bg-white rounded">
+                <button type="button" class="close" data-toggle="modal" data-target="#modal_antenna">
+                    <span><i class="fas fa-cog icon_cog"></i></span>
+                </button>
+                <h6 class="border-bottom border-gray pb-2 mb-0">Antenna</h6>
+
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="media text-muted pt-1">
+                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
+                                <strong class="d-block text-gray-dark">Total</strong>
+                                <a id="lbl_antenas_main">0</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="media text-muted pt-1">
+                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
+                                <strong class="d-block text-gray-dark">Transmission Height</strong>
+                                <a id="transmission_heiht_main_disp">0</a> m
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="m-2 p-2 bg-white rounded">
+                <button type="button" class="close" data-toggle="modal" data-target="#modal_propagation">
+                    <span><i class="fas fa-cog icon_cog"></i></span>
+                </button>
+                <h6 class="border-bottom border-gray pb-2 mb-0">Propagation Models</h6>
+
+                <!-- <div class="row">
+                    <div class="col-sm">
+                        <div class="media text-muted pt-1">
+                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
+                                <strong class="d-block text-gray-dark">Type</strong>
+                                FreeSpace
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="media text-muted pt-1">
+                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
+                                <strong class="d-block text-gray-dark">Extra</strong>
+                                &nbsp
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="media text-muted pt-1">
+                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
+                                <strong class="d-block text-gray-dark">Type</strong>
+                                DB per Meter
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="media text-muted pt-1">
+                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
+                                <strong class="d-block text-gray-dark">Extra</strong>
+                                0.4
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="media text-muted pt-1">
+                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
+                                <strong class="d-block text-gray-dark">Type</strong>
+                                DB per Cut
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="media text-muted pt-1">
+                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
+                                <strong class="d-block text-gray-dark">Extra</strong>
+                                9
+                            </p>
+                        </div>
+                    </div>
+                </div>
+ -->
+
+            </div>
+
+
+
+        </div>
+
+        <script src="./assets/js/jquery-3.4.1.min.js"></script>
+        <script src="./assets/js/bootstrap.min.js"></script>
+        <script src="./assets/js/mappa.min.js"></script>
+        <script src="./assets/js/turf.min.js"></script>
+        <script src="./assets/js/p5.min.js"></script>
+        <script src="./assets/js/jstat.min.js"></script>
+        <script src="./assets/tool/ModelsPropagation.js"></script>
+        <script src="./assets/tool/antenna.js"></script>
+        <script src="./assets/tool/buildings.js"></script>
+        <script src="./assets/tool/extras.js"></script>
+        <script src="./assets/tool/localcomunicador.js"></script>
+        <script src="./assets/tool/ComunicadorController.js"></script>
+        <script src="./assets/tool/main.js"></script>
+    </body>
+</html>
+
+
+
+<div class="modal fade" id="modal_environment">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Environment</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group row">
+                    <label  class="col-sm-3 col-form-label">
+                        Temperature 
+                    </label>
+                    <div class="col-sm-7">
+                        <input type="range" class="custom-range" id="temperature_range" min="-100" max="100" value="17" step="1">
+                    </div>
+                    <div class="col-sm-2">
+                        <p class="d-inline" id="temperature_display">0</p> <p class="d-inline">º C</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label  class="col-sm-3 col-form-label">
+                        Receiver Height
+                    </label>
+                    <div class="col-sm-7">
+                        <input type="range" class="custom-range" id="receiver_height_range" min="0" max="100" value="20" step="1">
+                    </div>
+                    <div class="col-sm-2">
+                        <p class="d-inline" id="receiver_height_display">20</p> <p class="d-inline">meters</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label  class="col-sm-3 col-form-label">
+                        Noise Figure
+                    </label>
+                    <div class="col-sm-7">
+                        <input type="range" class="custom-range" id="noise_figure_range" min="0" max="100" value="5" step="1">
+                    </div>
+                    <div class="col-sm-2">
+                        <p class="d-inline" id="noise_figure_display">0</p> <p class="d-inline">DB</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn_clean_alterations" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="modal_communication">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Communication</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group row">
+                    <label  class="col-sm-3 col-form-label">
+                        Frequency 
+                    </label>
+                    <div class="col-sm-7">
+                        <input type="range" class="custom-range" id="frequency_range" min="100" max="10000" value="5900" step="100">
+                    </div>
+                    <div class="col-sm-2">
+                        <p class="d-inline" id="frequency_display">0</p> <p class="d-inline">Mhz</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label  class="col-sm-3 col-form-label">
+                        Transmission Power
+                    </label>
+                    <div class="col-sm-7">
+                        <input type="range" class="custom-range" id="transmission_power_range" min="1" max="100" value="30" step="1">
+                    </div>
+                    <div class="col-sm-2">
+                        <p class="d-inline" id="transmission_power_display">0</p> <p class="d-inline">DB</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label  class="col-sm-3 col-form-label">
+                        Transmission Gain
+                    </label>
+                    <div class="col-sm-7">
+                        <input type="range" class="custom-range" id="transmission_gain_range" min="0" max="100" value="0" step="1">
+                    </div>
+                    <div class="col-sm-2">
+                        <p class="d-inline" id="transmission_gain_display">0</p> <p class="d-inline">DB</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label  class="col-sm-3 col-form-label">
+                        Reception Gain
+                    </label>
+                    <div class="col-sm-7">
+                        <input type="range" class="custom-range" id="reception_gain_range" min="0" max="100" value="0" step="1">
+                    </div>
+                    <div class="col-sm-2">
+                        <p class="d-inline" id="reception_gain_display">0</p> <p class="d-inline">DB</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn_clean_alterations" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modal_buildings">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Buildings</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="progress d-none" id="loading_buildings">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        Buildings Now
+                        <br>
+                        Total Buildings: <span class="badge badge-info" id="info_total_buildings">0</span>
+                        <br>
+                        Total Cordinates: <span class="badge badge-info" id="info_total_buildings_cords">0 </span>
+                    </div>
+                    <div class="col-sm-6">
+                        Update Buildings
+                        <input type="hidden" id="buildings_loaded_hidden">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="file_buildings_input">
+                            <label class="custom-file-label" for="file_buildings_input" id="lbl_input_building">Choose File</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        &nbsp<br>
+                        <button type="button" class="btn btn-primary" id="btn_update_buildings">Update</button>
+                    </div>
+                </div>
+
+                Building List
+                <div class="holder_info_buildings">
+                    <div class="bg-white rounded" id="list_buildings">
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn_clean_alterations" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modal_antenna">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Antenna</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="progress d-none" id="loading_antenna">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-4">
+                        Antennas Now
+                        <br>
+                        Total Antennas: <span class="badge badge-info" id="info_total_antenna">0</span>
+                    </div>
+                    <div class="col-sm-6">
+                        Update Antennas
+                        <div class="custom-file">
+                            <input type="hidden" id="antenna_loaded_hidden">
+                            <input type="file" class="custom-file-input" id="file_antenna_input">
+                            <label class="custom-file-label" for="file_antenna_input" id="lbl_input_antenna">Choose File</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        &nbsp<br>
+                        <button type="button" class="btn btn-primary" id="btn_update_antenna">Update</button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label  class="col-sm-3 col-form-label">
+                        Tranmission Height
+                    </label>
+                    <div class="col-sm-7">
+                        <input type="range" class="custom-range" id="tranmission_height_range" min="0" max="100" value="20" step="1">
+                    </div>
+                    <div class="col-sm-2">
+                        <p class="d-inline" id="tranmission_height_display">0</p> <p class="d-inline">meters</p>
+                    </div>
+                </div>
+
+                Antenna List
+                <div class="holder_info_buildings">
+                    <div class="bg-white rounded" id="list_antenna">
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn_clean_alterations" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modal_propagation">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Propagation model</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body holder_propagation_model">
+
+                <h5>On Open Air</h5>
+                <div class="list-group holder_list_propagation p-2 border border-light" id="holder_list_propagation_openair">
+
+
+                </div>
+                <hr>
+                <h5>On Obstacles</h5>
+                <div class="list-group holder_list_propagation p-2 border border-light" id="holder_list_propagation_obstacle">
+
+
+                </div>
+                <hr>
+                <h5>Per Cut</h5>
+                <div class="list-group holder_list_propagation p-2 border border-light" id="holder_list_cut">
+
+
+                </div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn_clean_alterations" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>

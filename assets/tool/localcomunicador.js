@@ -21,7 +21,7 @@ class LocalComunicar{
     constructor(pos, x, y){
         this.pos = pos
         this.updatePosicaoDisplay()
-        this.sizeCell = 7 // sizecell%2!=0 && sizecell>3
+        this.sizeCell = 5 // sizecell%2!=0 && sizecell>3
         this.potencia_recepcao = -Infinity
 
         this.distancias = {}

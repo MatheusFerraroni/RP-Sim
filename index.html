@@ -22,7 +22,7 @@
                         <a class="nav-link" href="#" id="btn_calculate_signal">Recalculate</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="salvarImagem()">Salvar Figura</span></a>
+                        <a class="nav-link" href="#" id="centermap">Center Map</span></a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-expanded="false">Extra</a>
@@ -32,9 +32,20 @@
                             <a class="dropdown-item" href="#" id="showantenas"> <i class="far fa-check-square" id="showantenascheck"></i> Show Anetenas</a>
                             <a class="dropdown-item" href="#" id="whitebackground"> <i class="far fa-square" id="whitebackgroundcheck"></i> White Background</a>
                             <a class="dropdown-item" href="#" id="mousesignal"> <i class="far fa-square" id="mousesignalcheck"></i> Mouse Signal</a>
-                            <hr>
-                            <a class="dropdown-item" href="#" id="exportimage"> Export Image </a>
-                            <a class="dropdown-item" href="#" id="centermap"> Center Map </a>
+                            <a class="dropdown-item" href="#" id="communication_area"> <i class="far fa-square" id="communication_areacheck"></i> Communication Area</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown02" data-toggle="dropdown" aria-expanded="false">Export</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown02">
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal_area_communication"> Communication Area </a>
+                            <a class="dropdown-item" href="#" onclick="salvarImagem()"> Figure </a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-toggle="dropdown" aria-expanded="false">View</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown03">
+                            <a class="dropdown-item" href="#"> Amount of received  </a>
                         </div>
                     </li>
                 </ul>
@@ -197,64 +208,7 @@
                 </button>
                 <h6 class="border-bottom border-gray pb-2 mb-0">Propagation Models</h6>
 
-                <!-- <div class="row">
-                    <div class="col-sm">
-                        <div class="media text-muted pt-1">
-                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
-                                <strong class="d-block text-gray-dark">Type</strong>
-                                FreeSpace
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="media text-muted pt-1">
-                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
-                                <strong class="d-block text-gray-dark">Extra</strong>
-                                &nbsp
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-sm">
-                        <div class="media text-muted pt-1">
-                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
-                                <strong class="d-block text-gray-dark">Type</strong>
-                                DB per Meter
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="media text-muted pt-1">
-                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
-                                <strong class="d-block text-gray-dark">Extra</strong>
-                                0.4
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-sm">
-                        <div class="media text-muted pt-1">
-                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
-                                <strong class="d-block text-gray-dark">Type</strong>
-                                DB per Cut
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="media text-muted pt-1">
-                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
-                                <strong class="d-block text-gray-dark">Extra</strong>
-                                9
-                            </p>
-                        </div>
-                    </div>
-                </div>
- -->
-
+ 
             </div>
 
 
@@ -267,6 +221,7 @@
         <script src="./assets/js/turf.min.js"></script>
         <script src="./assets/js/p5.min.js"></script>
         <script src="./assets/js/jstat.min.js"></script>
+        <script src="./assets/js/jsts.min.js"></script>
         <script src="./assets/tool/ModelsPropagation.js"></script>
         <script src="./assets/tool/antenna.js"></script>
         <script src="./assets/tool/buildings.js"></script>
@@ -325,7 +280,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn_clean_alterations" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-secondary btn_clean_alterations" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -390,7 +345,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn_clean_alterations" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-secondary btn_clean_alterations" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -441,7 +396,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn_clean_alterations" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-secondary btn_clean_alterations" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -503,7 +458,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn_clean_alterations" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-secondary btn_clean_alterations" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -543,7 +498,51 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn_clean_alterations" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-secondary btn_clean_alterations" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="modal_area_communication">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Export Communication Area</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm">
+                            <label for="export_com_area_input_good">Good Reception</label>
+                            <input type="number" class="form-control" id="export_com_area_input_good" value="-74" min="-150" max="0">
+                            <small class="form-text text-muted">Minimum received communication to consider as Good.</small>
+                        </div>
+                        <div class="col-sm">
+                            <label for="export_com_area_input_mid">Medium Reception</label>
+                            <input type="number" class="form-control" id="export_com_area_input_mid" value="-84" min="-150" max="0">
+                            <small class="form-text text-muted">Minimum received communication to consider as Medium.</small>
+                        </div>
+                        <div class="col-sm">
+                            <label for="export_com_area_input_bad">Bad Reception</label>
+                            <input type="number" class="form-control" id="export_com_area_input_bad" value="-94" min="-150" max="0">
+                            <small class="form-text text-muted">Minimum received communication to consider as Bad.</small>
+                        </div>
+                        <div class="col-sm">
+                            <label for="input_mid" style="display: block">&nbsp</label>
+                            <button type="button" class="btn btn-primary" id="export_communication_area_singlerun">Run</button>
+                            <button type="button" class="btn btn-primary" id="export_communication_area">Export</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn_clean_alterations" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

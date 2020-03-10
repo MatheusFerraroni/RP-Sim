@@ -334,6 +334,8 @@ class ComunicadorController{
 
         this.gradienteColor = null;
         this.area_comunicacao = {}
+
+        this.show_comm = false
         this.resetSinal()
     }
 
@@ -369,7 +371,6 @@ class ComunicadorController{
         // setTimeout(function() {
         //     return function() {
         //         dis.computeAreasCoverage()
-
         //         // downloadFiler("fris"+antennaC.antennas[0].posWGS.x+"_"+antennaC.antennas[0].posWGS.y+".geojson",
         //         //     JSON.stringify({"px":antennaC.antennas[0].posWGS.x, "py":antennaC.antennas[0].posWGS.y, "cobertura":dis.area_comunicacao})
         //         //     )
@@ -377,27 +378,122 @@ class ComunicadorController{
         // }(), 0);
     }
 
-
-    computeAreasCoverage(){
-
-        let dis = this;
-        setTimeout(function() {
-            return function() {
-                let zoomAtual = myMap.getZoom()
-                let good = int($("#input_configcommunicationarea_bom").val())
-                let mid = int($("#input_configcommunicationarea_medio").val())
-                let bad = int($("#input_configcommunicationarea_ruim").val())
+    compute_communication_area_singlerun(){
+        let zoomAtual = myMap.getZoom()
+        let good = int($("#export_com_area_input_good").val())
+        let mid = int($("#export_com_area_input_mid").val())
+        let bad = int($("#export_com_area_input_bad").val())
 
 
-                var reader = new jsts.io.WKTReader()
-                dis.area_comunicacao[zoomAtual] = {}
-                dis.area_comunicacao[zoomAtual][bad] = dis.computeAreasCoverageProcess(zoomAtual, bad, reader)
-                dis.area_comunicacao[zoomAtual][mid] = dis.computeAreasCoverageProcess(zoomAtual, mid, reader)
-                dis.area_comunicacao[zoomAtual][good] = dis.computeAreasCoverageProcess(zoomAtual, good, reader)
-            }
-        }(), 0);
-
+        var reader = new jsts.io.WKTReader()
+        let z = myMap.getZoom()
+        this.area_comunicacao[z] = {}
+        this.area_comunicacao[z][bad] = this.computeAreasCoverageProcess(zoomAtual, bad, reader)
+        this.area_comunicacao[z][mid] = this.computeAreasCoverageProcess(zoomAtual, mid, reader)
+        this.area_comunicacao[z][good] = this.computeAreasCoverageProcess(zoomAtual, good, reader)
     }
+
+    exportCommunicationArea(){
+        
+        
+        
+        let zoomAtual = myMap.getZoom()
+        let good = int($("#export_com_area_input_good").val())
+        let mid = int($("#export_com_area_input_mid").val())
+        let bad = int($("#export_com_area_input_bad").val())
+
+
+        var reader = new jsts.io.WKTReader()
+        let z = myMap.getZoom()
+        this.area_comunicacao[z] = {}
+        this.area_comunicacao[z][bad] = this.computeAreasCoverageProcess(zoomAtual, bad, reader)
+        this.area_comunicacao[z][mid] = this.computeAreasCoverageProcess(zoomAtual, mid, reader)
+        this.area_comunicacao[z][good] = this.computeAreasCoverageProcess(zoomAtual, good, reader)
+
+
+
+        let e = {  "type": "GeometryCollection",
+                   "geometries": []
+                }
+
+
+        let ar_good = this.area_comunicacao[z][good]
+        let ar_mid = this.area_comunicacao[z][mid]
+        let ar_bad = this.area_comunicacao[z][bad]
+
+        if(ar_good.pos_latlng.length>0){
+            ar_good.pos_latlng.map(function(ee){
+                return ee.push(ee[ee.length-1])
+            })
+            let f1 = { "type": "MultiPolygon",
+                           "coordinates": [ar_good.pos_latlng.map(function(ee){
+                                                                                                return ee.map(function(eee){
+                                                                                                    return [eee.lng, eee.lat]
+                                                                                                })
+                                                                                            })]
+                   }
+            e["geometries"].push(f1)
+        }
+        if(ar_mid.pos_latlng.length>0){
+            ar_mid.pos_latlng.map(function(ee){
+                return ee.push(ee[ee.length-1])
+            })
+            let f2 = { "type": "MultiPolygon",
+                           "coordinates": [ar_mid.pos_latlng.map(function(ee){
+                                                                                                return ee.map(function(eee){
+                                                                                                    return [eee.lng, eee.lat]
+                                                                                                })
+                                                                                            })]
+                   }
+            e["geometries"].push(f2)
+        }
+        if(ar_bad.pos_latlng.length>0){
+            ar_bad.pos_latlng.map(function(ee){
+                return ee.push(ee[ee.length-1])
+            })
+            let f3 = { "type": "MultiPolygon",
+                           "coordinates": [ar_bad.pos_latlng.map(function(ee){
+                                                                                                return ee.map(function(eee){
+                                                                                                    return [eee.lng, eee.lat]
+                                                                                                })
+                                                                                            })]
+                   }
+            e["geometries"].push(f3)
+        }
+
+        for (let i=0;i<antennaC.antennas.length;i++){
+            let ant = antennaC.antennas[i]
+            let p = {
+                "type": "Point", 
+                "coordinates": [ant.posWGS.x, ant.posWGS.y]
+            }
+            e["geometries"].push(p)
+        }
+
+        e = JSON.stringify(e)
+        downloadFiler("communication_area.geojson",e)
+    }
+
+    // computeAreasCoverage(){
+
+    //     let dis = this;
+    //     setTimeout(function() {
+    //         return function() {
+    //             let zoomAtual = myMap.getZoom()
+    //             let good = int($("#input_configcommunicationarea_bom").val())
+    //             let mid = int($("#input_configcommunicationarea_medio").val())
+    //             let bad = int($("#input_configcommunicationarea_ruim").val())
+
+
+    //             var reader = new jsts.io.WKTReader()
+    //             dis.area_comunicacao[zoomAtual] = {}
+    //             dis.area_comunicacao[zoomAtual][bad] = dis.computeAreasCoverageProcess(zoomAtual, bad, reader)
+    //             dis.area_comunicacao[zoomAtual][mid] = dis.computeAreasCoverageProcess(zoomAtual, mid, reader)
+    //             dis.area_comunicacao[zoomAtual][good] = dis.computeAreasCoverageProcess(zoomAtual, good, reader)
+    //         }
+    //     }(), 0);
+
+    // }
 
     computeAreasCoverageProcess(zoom, sinalLevel, reader){
 
@@ -461,9 +557,10 @@ class ComunicadorController{
         if(typeof this.area_comunicacao[zoomAtual]=="undefined"){
             return
         }
-        let good = int($("#input_configcommunicationarea_bom").val())
-        let mid = int($("#input_configcommunicationarea_medio").val())
-        let bad = int($("#input_configcommunicationarea_ruim").val())
+
+        let good = int($("#export_com_area_input_good").val())
+        let mid = int($("#export_com_area_input_mid").val())
+        let bad = int($("#export_com_area_input_bad").val())
 
         for(let i=0;i<this.area_comunicacao[zoomAtual][bad]["pos_latlng"].length;i++){
             for(let j=0;j<this.area_comunicacao[zoomAtual][bad]["pos_latlng"][i].length;j++){
@@ -552,6 +649,15 @@ class ComunicadorController{
                 // });
             }
         }(),0)
+
+
+        setTimeout(function() {
+            return function() {
+                if(dis.show_comm){
+                    dis.compute_communication_area_singlerun()
+                }
+            }
+        }(),0)
     }
 
     fastRun(){
@@ -606,5 +712,91 @@ class ComunicadorController{
         //         }
         //     },
         // });
+
+        // let dis = this;
+        // setTimeout(function() {
+        if(this.show_comm){
+            this.compute_communication_area_singlerun()
+        }
+        // }(),0)
+    }
+
+
+    toggleDraw(){
+        this.show_comm = ! this.show_comm
+
+        if(this.show_comm){
+            $("#communication_areacheck").removeClass("fa-square")
+            $("#communication_areacheck").addClass("fa-check-square")
+            this.compute_communication_area_singlerun()
+        }else{
+            $("#communication_areacheck").addClass("fa-square")
+            $("#communication_areacheck").removeClass("fa-check-square")
+        }
+    }
+
+    showCommunicationArea(){
+        if(!this.show_comm){
+            return
+        }
+
+        let good = int($("#export_com_area_input_good").val())
+        let mid = int($("#export_com_area_input_mid").val())
+        let bad = int($("#export_com_area_input_bad").val())
+
+
+        let z = myMap.getZoom()
+
+        if(typeof comunicadorController.area_comunicacao[z]!="undefined"){
+            if(typeof comunicadorController.area_comunicacao[z][bad]!="undefined"){
+                fill(255, 0, 0);
+                for(let pol_pos=0;pol_pos<comunicadorController.area_comunicacao[z][bad].pos.length; pol_pos++){
+
+                    let pol = comunicadorController.area_comunicacao[z][bad].pos[pol_pos]
+                    beginShape();
+                    for(let p=0; p<pol.length;p++){
+                        vertex(pol[p].x, pol[p].y);
+                    }
+                    endShape(CLOSE);
+
+                }
+            }
+        }
+
+
+
+        if(typeof comunicadorController.area_comunicacao[z]!="undefined"){
+            if(typeof comunicadorController.area_comunicacao[z][mid]!="undefined"){
+                fill(200, 128, 0);
+                for(let pol_pos=0;pol_pos<comunicadorController.area_comunicacao[z][mid].pos.length; pol_pos++){
+
+                    let pol = comunicadorController.area_comunicacao[z][mid].pos[pol_pos]
+                    beginShape();
+                    for(let p=0; p<pol.length;p++){
+                        vertex(pol[p].x, pol[p].y);
+                    }
+                    endShape(CLOSE);
+
+                }
+            }
+        }
+
+
+
+        if(typeof comunicadorController.area_comunicacao[z]!="undefined"){
+            if(typeof comunicadorController.area_comunicacao[z][good]!="undefined"){
+                fill(0, 255, 0);
+                for(let pol_pos=0;pol_pos<comunicadorController.area_comunicacao[z][good].pos.length; pol_pos++){
+
+                    let pol = comunicadorController.area_comunicacao[z][good].pos[pol_pos]
+                    beginShape();
+                    for(let p=0; p<pol.length;p++){
+                        vertex(pol[p].x, pol[p].y);
+                    }
+                    endShape(CLOSE);
+
+                }
+            }
+        }
     }
 }

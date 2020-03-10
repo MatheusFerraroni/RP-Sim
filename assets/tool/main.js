@@ -16,7 +16,6 @@ var comunicadorController = null
 var white_background = false
 var mouseWheel = false
 var showMouseSignal = false
-var showCommunicationArea = false
 var canvas = null
 var myMap = null
 const mappa = new Mappa('Leaflet');
@@ -85,66 +84,8 @@ function draw(){
     escala.draw()
 
 
-    if(showCommunicationArea){
-        let good = int($("#input_configcommunicationarea_bom").val())
-        let mid = int($("#input_configcommunicationarea_medio").val())
-        let bad = int($("#input_configcommunicationarea_ruim").val())
+    comunicadorController.showCommunicationArea()
 
-
-
-
-        if(typeof comunicadorController.area_comunicacao[myMap.zoom()]!="undefined"){
-            if(typeof comunicadorController.area_comunicacao[myMap.zoom()][bad]!="undefined"){
-                fill(255, 0, 0);
-                for(let pol_pos=0;pol_pos<comunicadorController.area_comunicacao[myMap.zoom()][bad].pos.length; pol_pos++){
-
-                    let pol = comunicadorController.area_comunicacao[myMap.zoom()][bad].pos[pol_pos]
-                    beginShape();
-                    for(let p=0; p<pol.length;p++){
-                        vertex(pol[p].x, pol[p].y);
-                    }
-                    endShape(CLOSE);
-
-                }
-            }
-        }
-
-
-
-        if(typeof comunicadorController.area_comunicacao[myMap.zoom()]!="undefined"){
-            if(typeof comunicadorController.area_comunicacao[myMap.zoom()][mid]!="undefined"){
-                fill(200, 128, 0);
-                for(let pol_pos=0;pol_pos<comunicadorController.area_comunicacao[myMap.zoom()][mid].pos.length; pol_pos++){
-
-                    let pol = comunicadorController.area_comunicacao[myMap.zoom()][mid].pos[pol_pos]
-                    beginShape();
-                    for(let p=0; p<pol.length;p++){
-                        vertex(pol[p].x, pol[p].y);
-                    }
-                    endShape(CLOSE);
-
-                }
-            }
-        }
-
-
-
-        if(typeof comunicadorController.area_comunicacao[myMap.zoom()]!="undefined"){
-            if(typeof comunicadorController.area_comunicacao[myMap.zoom()][good]!="undefined"){
-                fill(0, 255, 0);
-                for(let pol_pos=0;pol_pos<comunicadorController.area_comunicacao[myMap.zoom()][good].pos.length; pol_pos++){
-
-                    let pol = comunicadorController.area_comunicacao[myMap.zoom()][good].pos[pol_pos]
-                    beginShape();
-                    for(let p=0; p<pol.length;p++){
-                        vertex(pol[p].x, pol[p].y);
-                    }
-                    endShape(CLOSE);
-
-                }
-            }
-        }
-    }
 
     mouseSignal()
 }
@@ -239,7 +180,10 @@ function preload(){
     $(document).on('click', '#bigline', function(e){ escala.toggleBigLine() })
     $(document).on('click', '#showbuildings', function(e){ buildingsC.toggleDraw() })
     $(document).on('click', '#showantenas', function(e){ antennaC.toggleDraw() })
-    $(document).on('click', '#exportimage', function(e){ salvarImagem() })
+    $(document).on('click', '#communication_area', function(e){ comunicadorController.toggleDraw() })
+
+    $(document).on('click', '#export_communication_area', function(e){ comunicadorController.exportCommunicationArea() })
+    $(document).on('click', '#export_communication_area_singlerun', function(e){ comunicadorController.compute_communication_area_singlerun() })
 
 
     $(document).on('click', '#centermap', function(e){ centermap() })
@@ -343,7 +287,6 @@ function preload(){
 
 
 
-    // $(document).on('change', '#checkbox_enable_communicationArea', function() { showCommunicationArea = this.checked; $("#config_communicationarea").toggle() })
 
     // $(document).on('click', '#btn_reload_communication_area', function() { comunicadorController.computeAreasCoverage() })
 
@@ -460,7 +403,8 @@ function btn_update_buildings(){
     $("#info_total_buildings_cords").html(total_coords)
     $("#total_buildings_cords_main").html(total_coords)
 
-
+    comunicadorController.area_comunicacao = {}
+    centermap()
 }
 
 function btn_update_antenna(){
@@ -512,6 +456,7 @@ function btn_update_antenna(){
     if(bugged_antennas){
         alert("At least 1 antenna were not added.")
     }
+    comunicadorController.area_comunicacao = {}
 }
 
 //                                                                        dddddddd                                                                                                                                                                                                        
@@ -547,9 +492,6 @@ function setup(){
     myMap = mappa.tileMap(options);
     myMap.overlay(canvas) 
     myMap.onChange(mapChangeHandler)
-
-
-
 }
 
 

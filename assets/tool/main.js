@@ -589,7 +589,9 @@ function centermap(){
     let lat = (bounds[0].lat+bounds[1].lat)/2
     let lng = (bounds[0].lng+bounds[1].lng)/2
 
-    myMap.map.setView(new L.LatLng(lat,lng),13)
+    if(typeof(myMap.map)!="undefined"){
+        myMap.map.setView(new L.LatLng(lat,lng),13)
+    }
 }
 
 

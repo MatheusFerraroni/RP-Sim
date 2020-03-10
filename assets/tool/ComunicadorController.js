@@ -170,43 +170,43 @@ class Signal{
         this.updateNoiseFigure(this.noise_figure)
 
 
-    let dis = this;
-    $(document).on('input change', '#frequency_range', function(e) { 
-        let v = e.target.value
-        dis.updateFrequency(v)
-    })
-    $(document).on('input change', '#transmission_power_range', function(e) { 
-        let v = e.target.value
-        dis.updatePtx(v)
-    })
-    $(document).on('input change', '#transmission_gain_range', function(e) { 
-        let v = e.target.value
-        dis.updateGtx(v)
-    })
-    $(document).on('input change', '#reception_gain_range', function(e) { 
-        let v = e.target.value
-        dis.updateGrx(v)
-    })
+        let dis = this;
+        $(document).on('input change', '#frequency_range', function(e) { 
+            let v = int(e.target.value)
+            dis.updateFrequency(v)
+        })
+        $(document).on('input change', '#transmission_power_range', function(e) { 
+            let v = int(e.target.value)
+            dis.updatePtx(v)
+        })
+        $(document).on('input change', '#transmission_gain_range', function(e) { 
+            let v = int(e.target.value)
+            dis.updateGtx(v)
+        })
+        $(document).on('input change', '#reception_gain_range', function(e) { 
+            let v = int(e.target.value)
+            dis.updateGrx(v)
+        })
 
 
 
-    $(document).on('input change', '#temperature_range', function(e) { 
-        let v = e.target.value
-        dis.updateTemperature(v)
-    })
+        $(document).on('input change', '#temperature_range', function(e) { 
+            let v = int(e.target.value)
+            dis.updateTemperature(v)
+        })
 
-    $(document).on('input change', '#noise_figure_range', function(e) { 
-        let v = e.target.value
-        dis.updateNoiseFigure(v)
-    })
-    $(document).on('input change', '#receiver_height_range', function(e) { 
-        let v = e.target.value
-        dis.updateRxHeight(v)
-    })
-    $(document).on('input change', '#tranmission_height_range', function(e) { 
-        let v = e.target.value
-        dis.updateTxHeight(v)
-    })
+        $(document).on('input change', '#noise_figure_range', function(e) { 
+            let v = int(e.target.value)
+            dis.updateNoiseFigure(v)
+        })
+        $(document).on('input change', '#receiver_height_range', function(e) { 
+            let v = int(e.target.value)
+            dis.updateRxHeight(v)
+        })
+        $(document).on('input change', '#tranmission_height_range', function(e) { 
+            let v = int(e.target.value)
+            dis.updateTxHeight(v)
+        })
 
 
 
@@ -625,28 +625,26 @@ class ComunicadorController{
                 let data_y = comunicadorController.niveis_sinal.map(function(e){ return str(e.value) })
                 let data_x = comunicadorController.niveis_sinal.map(function(e){ return e.total })
 
-                for(let i=0;i<data_x.length;i++){
-                    data_x[i] /= localComunicadorC.locals[zoomAtual].length
-                    data_x[i] *= 100
-                }
 
-                // var myChart = new Chart(ctx, {
-                //     type: 'bar',
-                //     data: {
-                //         labels: data_y,
-                //         datasets: [{
-                //             label: '# of Votes',
-                //             data: data_x,
-                //             backgroundColor: dis.gradienteColor,
-                //             borderWidth: 1
-                //         }]
-                //     },
-                //     options: {
-                //         animation: {
-                //             duration: 0
-                //         }
-                //     },
-                // });
+                let m = max(data_x)
+                data_x = data_x.map(function(e){return e/m})
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data_y,
+                        datasets: [{
+                            label: 'Signal Received',
+                            data: data_x,
+                            backgroundColor: dis.gradienteColor,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        animation: {
+                            duration: 0
+                        }
+                    },
+                });
             }
         }(),0)
 
@@ -690,28 +688,26 @@ class ComunicadorController{
         let data_y = comunicadorController.niveis_sinal.map(function(e){ return str(e.value) })
         let data_x = comunicadorController.niveis_sinal.map(function(e){ return e.total })
 
-        for(let i=0;i<data_x.length;i++){
-            data_x[i] /= localComunicadorC.locals[zoomAtual].length
-            data_x[i] *= 100
-        }
+        let m = max(data_x)
+        data_x = data_x.map(function(e){return e/m})
 
-        // var myChart = new Chart(ctx, {
-        //     type: 'bar',
-        //     data: {
-        //         labels: data_y,
-        //         datasets: [{
-        //             label: '# of Votes',
-        //             data: data_x,
-        //             backgroundColor: this.gradienteColor,
-        //             borderWidth: 1
-        //         }]
-        //     },
-        //     options: {
-        //         animation: {
-        //             duration: 0
-        //         }
-        //     },
-        // });
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data_y,
+                datasets: [{
+                    label: 'Signal Received',
+                    data: data_x,
+                    backgroundColor: this.gradienteColor,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                animation: {
+                    duration: 0
+                }
+            },
+        });
 
         // let dis = this;
         // setTimeout(function() {

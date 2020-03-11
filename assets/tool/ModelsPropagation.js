@@ -238,6 +238,73 @@ function calc_three_log_distance(node_distance){
 
 
 
+function noise(){
+
+    let boltzmann=math.coulomb.value
+    let t_centigrado=SD.temperature
+    let t_kelvin=t_centigrado + 273               
+
+    No_zero =  10*Math.log10(boltzmann) //+ 20*Math.log10(t_kelvin)
+    // No =  10*math.log10(boltzmann) + 10*math.log10(t_kelvin)
+
+
+
+    // print('\n\n*************  NOISE POWER  *************')
+    // print('\nBoltzmann constant = {0} watt/k-Hz'.format(boltzmann))
+    // print('\nNoise level in 1 Hz of bandwidth at absolute zero  = {0} dBW'.format(No_zero))
+    // print('\nNoise level in 1 Hz of bandwidth = {0} dbW at {1} centigrados'.format(No,t_centigrado))
+
+    // #Aumming T=17C, BW=10MHz, FigureNoise FN=3dB
+    // FN=3
+    // BW=10*10**6 #in Hz
+    // Pn= No + FN + 10*math.log10(BW)
+
+    // print('\nNoise power (level) = {0} dBW'.format(Pn))
+
+
+
+    // print('\n\n*************  SNR  *************')
+    // PRx_dBw = PTx_dBw +  GTx + GRx - freeSpace
+    // SNR =  PRx_dBw - Pn
+    // SNR=10
+    // SNR_vezes = dB_vezes(SNR)
+    // print('\nSNR {0} dB'.format(SNR))
+    // print('\nSNR {0} vezes'.format(SNR_vezes))
+
+
+
+    // print('\n\n*************  Shannon Capacity Limit  *************')
+    // BR =  BW*math.log(1+SNR,2)
+    // print('\nBit Rate - Shannon Limit {0} Mbps'.format(BR/1000000))
+
+    // print('\n\n************* BER  *************')
+    // Pe_BPSK = 0.5*math.erfc(math.sqrt(SNR_vezes))
+    // print('\nBER BPSK and QPSK {0} '.format(Pe_BPSK))
+
+    // M=8
+    // Pe_8PSK = (1/math.log(M,2))*math.erfc(math.sqrt(SNR_vezes*math.log(M,2))*math.sin(math.pi/M))
+    // print('\nBER MPSK {0} M={1} '.format(Pe_8PSK,M))
+
+    // M=16
+    // Pe_16PSK = (1/math.log(M,2))*math.erfc(math.sqrt(SNR_vezes*math.log(M,2))*math.sin(math.pi/M))
+    // print('\nBER MPSK {0} M={1} '.format(Pe_16PSK,M))
+
+
+
+
+    // M=4
+    // Pe_4QAM = (float(1)/2)*math.erfc(math.sqrt(SNR_vezes))
+    // print('\nBER MQAM {0} M={1} '.format(Pe_4QAM,M))
+
+    // M=16
+    // Pe_16QAM = (float(3)/8)*math.erfc(math.sqrt((float(2)/5)*SNR_vezes))
+    // print('\nBER MQAM {0} M={1} '.format(Pe_16QAM,M))
+
+    // M=64
+    // Pe_64QAM = (float(7)/24)*math.erfc(math.sqrt((float(1)/7)*SNR_vezes))
+    // print('\nBER MQAM {0} M={1} '.format(Pe_64QAM,M))
+}
+
 
 
 class BasePropagationModel{
@@ -336,6 +403,7 @@ class BasePropagationModel{
 
                 this.tipo = "okomurahata"
                 this.tipoCalculoDistancia = 1
+                this.type_scenery = 1
                 if(!supressHtml){
                     this.populateHTML()
                 }
@@ -375,6 +443,20 @@ class BasePropagationModel{
                                 </div>\
                             </div>\
                         </div>\
+                        <div class=\"row\">\
+                            <div class=\"col\">\
+                                Scenario Type\
+                            </div>\
+                        </div>\
+                        <div class=\"row\">\
+                            <div class=\"col\">\
+                                <select class=\"form-control\" id=\"select_okomurahata\">\
+                                    <option value=\"1\">Urban Scenario</option>\
+                                    <option value=\"2\">Suburban Scenario</option>\
+                                    <option value=\"3\">Rural Scenario</option>\
+                                </select>\
+                            </div>\
+                        </div>\
                     </a>"
 
                 $("#holder_list_propagation_openair").append(ne)
@@ -383,6 +465,10 @@ class BasePropagationModel{
                 $('input[name="okomurahata_distance_calculation"]').change(function(e){
                     let v = int($('input[name="okomurahata_distance_calculation"]:checked').val())
                     dis.tipoCalculoDistancia = v
+                })
+
+                $("#select_okomurahata").change(function(){
+                    dis.type_scenery = int($("#select_okomurahata").val())
                 })
             }
 
@@ -395,26 +481,24 @@ class BasePropagationModel{
                     dist_total = (dist_out+dist_ins) // kilometers
                 }
 
-
-
-                // let scenario = 1
                 let a0=0
                 let a1=0
                 let a2=12
                 let a3=0.1
-                // if(scenario == 1){
-                    a0=36.2
-                    a1=30.2
-                // }else if(scenario == 2){
-                //     a0=43.2
-                //     a1=68.93
-                // }else if(scenario == 3){
-                //     a0=45.95
-                //     a1=100.6
-                // }
+                if (this.type_scenery==1){
+                   a0=36.2
+                   a1=30.2
+                }else if(this.type_scenery==2){
+                   a0=43.2
+                   a1=68.93
+                }else if(this.type_scenery==3){
+                   a0=45.95
+                   a1=100.6
+                }
 
 
                 dist_total /= 1000
+
                 let hRx_correlation = (1.1*Math.log10(SD.frequency)-0.7)*SD.rx_antenna_height-(1.56*Math.log10(SD.frequency)-0.8)
                 let hata = 69.55 + 26.16*Math.log10(SD.frequency)-13.82*Math.log10(SD.tx_antenna_height)-hRx_correlation+Math.log10(dist_total)*(44.9-6.55*Math.log10(SD.rx_antenna_height))
                 hata = -hata

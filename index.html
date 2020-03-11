@@ -118,28 +118,34 @@
                     <div class="col-sm">
                         <div class="media text-muted pt-1">
                             <p class="media-body pb-0 mb-0 small border-bottom border-gray">
-                                <strong class="d-block text-gray-dark">Frequency</strong>
+                                <strong class="d-block text-gray-dark">Band Frequency</strong>
                                 <a id="frequency_main_label">0</a> Mhz
                             </p>
                         </div>
                         <div class="media text-muted pt-1">
                             <p class="media-body pb-0 mb-0 small border-bottom border-gray">
                                 <strong class="d-block text-gray-dark">Transmission Gain</strong>
-                                <a id="gtx_main_label">0</a> DBm
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="media text-muted pt-1">
-                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
-                                <strong class="d-block text-gray-dark">Transmission Power</strong>
-                                <a id="ptx_main_label">0</a> DB
+                                <a id="gtx_main_label">0</a> dBm
                             </p>
                         </div>
                         <div class="media text-muted pt-1">
                             <p class="media-body pb-0 mb-0 small border-bottom border-gray">
                                 <strong class="d-block text-gray-dark">Reception Gain</strong>
                                 <a id="grx_main_label">0</a> DB
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="media text-muted pt-1">
+                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
+                                <strong class="d-block text-gray-dark">Channel Frequency</strong>
+                                <a id="frequency_channel_main_label">0</a> Mhz
+                            </p>
+                        </div>
+                        <div class="media text-muted pt-1">
+                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
+                                <strong class="d-block text-gray-dark">Transmission Power</strong>
+                                <a id="ptx_main_label">0</a> dBm
                             </p>
                         </div>
                     </div>
@@ -304,13 +310,24 @@
 
                 <div class="form-group row">
                     <label  class="col-sm-3 col-form-label">
-                        Frequency 
+                        Band Frequency
                     </label>
                     <div class="col-sm-7">
                         <input type="range" class="custom-range" id="frequency_range" min="100" max="10000" value="5900" step="100">
                     </div>
                     <div class="col-sm-2">
                         <p class="d-inline" id="frequency_display">0</p> <p class="d-inline">Mhz</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label  class="col-sm-3 col-form-label">
+                        Channels Frequency
+                    </label>
+                    <div class="col-sm-7">
+                        <input type="range" class="custom-range" id="frequency_channel_range" min="1" max="100" value="10" step="1">
+                    </div>
+                    <div class="col-sm-2">
+                        <p class="d-inline" id="frequency_channel_display">0</p> <p class="d-inline">Mhz</p>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -564,7 +581,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div id="chart_holder"></div>
+                <div id="chart_holder">sd</div>
 
             </div>
             <div class="modal-footer">

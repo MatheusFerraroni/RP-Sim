@@ -34,6 +34,7 @@ class Signal{
         this.ptx = 30
         this.tx_antenna_height = 20
         this.rx_antenna_height = 2
+        this.frequency_channel = 10 // in Mhz
         this.temperature = 17
         this.noise_figure = 1
 
@@ -64,17 +65,27 @@ class Signal{
     }
 
     getFrequencyGhz(){
-        return this.frequency/1000
+        return this.frequency*10**3
     }
 
     getFrequencyMhz(){
         return this.frequency
     }
     getFrequencyKhz(){
-        return this.frequency*1000
+        return this.frequency*10*3
     }
     getFrequencyHz(){
-        return this.frequency*1000*1000
+        return this.frequency*10**6
+    }
+    getFrequencyChannelHz(){
+        return this.frequency*10**6
+    }
+    dB_vezes(x){
+        return 10**(x/10.0)
+    }
+
+    vezes_dB(x){
+        return 10*math.log10(x)
     }
 
     calc_wave_length(){
@@ -82,7 +93,7 @@ class Signal{
     }
 
     dbm_to_watt(dbm){
-        return (Math.pow(10.0, dbm / 10.0)) / 1000.0
+        return dbm-30
     }
 
     watt_to_dbm(watt){
@@ -149,13 +160,20 @@ class Signal{
         $("#noise_figure_main_display").html(this.noise_figure)
         $("#noise_figure_display").html(this.noise_figure)
     }
-    
+
+    updateFrequencyChannel(p){
+        this.frequency_channel = p
+
+        $("#frequency_channel_main_label").html(this.frequency_channel)
+        $("#frequency_channel_display").html(this.frequency_channel)
+    }
 
     setBindings(){
         this.updateFrequency(this.frequency)
         this.updateGtx(this.gtx)
         this.updatePtx(this.ptx)
         this.updateGrx(this.grx) 
+        this.updateFrequencyChannel(this.frequency_channel)
 
         $("#tranmission_height_range").val(this.tx_antenna_height)
         this.updateTxHeight(this.tx_antenna_height)
@@ -174,6 +192,10 @@ class Signal{
         $(document).on('input change', '#frequency_range', function(e) { 
             let v = int(e.target.value)
             dis.updateFrequency(v)
+        })
+        $(document).on('input change', '#frequency_channel_range', function(e) { 
+            let v = int(e.target.value)
+            dis.updateFrequencyChannel(v)
         })
         $(document).on('input change', '#transmission_power_range', function(e) { 
             let v = int(e.target.value)
@@ -653,6 +675,16 @@ class ComunicadorController{
             return function() {
                 if(dis.show_comm){
                     dis.compute_communication_area_singlerun()
+                }
+            }
+        }(),0)
+
+
+        setTimeout(function() {
+            return function() {
+                for(let i=0;i<localComunicadorC.locals[zoomAtual].length;i++){
+                    let local = localComunicadorC.locals[zoomAtual][i]
+
                 }
             }
         }(),0)

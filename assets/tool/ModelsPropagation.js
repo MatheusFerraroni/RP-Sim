@@ -238,73 +238,64 @@ function calc_three_log_distance(node_distance){
 
 
 
-function noise(){
+function snr_ber(received_dbw){
+    let ret = {}
+    let t_kelvin = SD.temperature + 273               
 
-    let boltzmann=math.coulomb.value
-    let t_centigrado=SD.temperature
-    let t_kelvin=t_centigrado + 273               
-
-    No_zero =  10*Math.log10(boltzmann) //+ 20*Math.log10(t_kelvin)
-    // No =  10*math.log10(boltzmann) + 10*math.log10(t_kelvin)
+    let No_zero = 10*Math.log10(math.boltzmann.value)
+    let No = 10*Math.log10(math.boltzmann.value) + 10*Math.log10(t_kelvin)
 
 
 
-    // print('\n\n*************  NOISE POWER  *************')
-    // print('\nBoltzmann constant = {0} watt/k-Hz'.format(boltzmann))
-    // print('\nNoise level in 1 Hz of bandwidth at absolute zero  = {0} dBW'.format(No_zero))
-    // print('\nNoise level in 1 Hz of bandwidth = {0} dbW at {1} centigrados'.format(No,t_centigrado))
+    let BW = SD.getFrequencyHz()
+    BW = SD.getFrequencyChannelHz()
+    let Pn = No + SD.noise_figure + 10*Math.log10(BW)
 
-    // #Aumming T=17C, BW=10MHz, FigureNoise FN=3dB
-    // FN=3
-    // BW=10*10**6 #in Hz
-    // Pn= No + FN + 10*math.log10(BW)
-
-    // print('\nNoise power (level) = {0} dBW'.format(Pn))
+    ret["noise_power_dBW"] = Pn
 
 
-
-    // print('\n\n*************  SNR  *************')
-    // PRx_dBw = PTx_dBw +  GTx + GRx - freeSpace
-    // SNR =  PRx_dBw - Pn
-    // SNR=10
-    // SNR_vezes = dB_vezes(SNR)
-    // print('\nSNR {0} dB'.format(SNR))
-    // print('\nSNR {0} vezes'.format(SNR_vezes))
-
-
-
-    // print('\n\n*************  Shannon Capacity Limit  *************')
-    // BR =  BW*math.log(1+SNR,2)
-    // print('\nBit Rate - Shannon Limit {0} Mbps'.format(BR/1000000))
-
-    // print('\n\n************* BER  *************')
-    // Pe_BPSK = 0.5*math.erfc(math.sqrt(SNR_vezes))
-    // print('\nBER BPSK and QPSK {0} '.format(Pe_BPSK))
-
-    // M=8
-    // Pe_8PSK = (1/math.log(M,2))*math.erfc(math.sqrt(SNR_vezes*math.log(M,2))*math.sin(math.pi/M))
-    // print('\nBER MPSK {0} M={1} '.format(Pe_8PSK,M))
-
-    // M=16
-    // Pe_16PSK = (1/math.log(M,2))*math.erfc(math.sqrt(SNR_vezes*math.log(M,2))*math.sin(math.pi/M))
-    // print('\nBER MPSK {0} M={1} '.format(Pe_16PSK,M))
+    // let free = 20*Math.log10(dist)+20*Math.log10(SD.getFrequencyMhz())+32.45
+    // let PRx_dBw = SD.getPtxWatt() +  SD.gtx + SD.grx - free
+    let PRx_dBw = received_dbw
+    let SNR =  PRx_dBw - Pn
+    let SNR_vezes = SD.dB_vezes(SNR)
+    ret["snr_dB"] = SNR
+    ret["snr_vezes"] = SNR_vezes
 
 
 
 
-    // M=4
-    // Pe_4QAM = (float(1)/2)*math.erfc(math.sqrt(SNR_vezes))
-    // print('\nBER MQAM {0} M={1} '.format(Pe_4QAM,M))
+    let BR =  (BW*math.log(1+SNR,2))/1000000 //Mbps
+    ret["shannon_limit_Mbps"] = BR
 
-    // M=16
-    // Pe_16QAM = (float(3)/8)*math.erfc(math.sqrt((float(2)/5)*SNR_vezes))
-    // print('\nBER MQAM {0} M={1} '.format(Pe_16QAM,M))
+    let Pe_BPSK = 0.5*(1-math.erf(math.sqrt(SNR_vezes)))
+    ret["Pe_BPSK"] = Pe_BPSK
 
-    // M=64
-    // Pe_64QAM = (float(7)/24)*math.erfc(math.sqrt((float(1)/7)*SNR_vezes))
-    // print('\nBER MQAM {0} M={1} '.format(Pe_64QAM,M))
+    let M=8
+    let Pe_8PSK = (1/math.log(M,2))*(1-math.erf(math.sqrt(SNR_vezes*math.log(M,2))*math.sin(math.pi/M)))
+    ret["Pe_8PSK"] = Pe_8PSK
+
+    M=16
+    Pe_16PSK = (1/math.log(M,2))*(1-math.erf(math.sqrt(SNR_vezes*math.log(M,2))*math.sin(math.pi/M)))
+    ret["Pe_16PSK"] = Pe_16PSK
+
+
+
+
+    M=4
+    Pe_4QAM = (float(1)/2)*(1-math.erf(math.sqrt(SNR_vezes)))
+    ret["Pe_4QAM"] = Pe_4QAM
+
+    M=16
+    Pe_16QAM = (float(3)/8)*(1-math.erf(math.sqrt((float(2)/5)*SNR_vezes)))
+    ret["Pe_16QAM"] = Pe_16QAM
+
+    M=64
+    Pe_64QAM = (float(7)/24)*(1-math.erf(math.sqrt((float(1)/7)*SNR_vezes)))
+    ret["Pe_64QAM"] = Pe_64QAM
+
+    return ret
 }
-
 
 
 class BasePropagationModel{

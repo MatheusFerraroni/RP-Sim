@@ -172,8 +172,6 @@ function preload(){
 
 
 
-    $("#modal_propagation").modal()
-
     $(document).on('click', '#btn_update_buildings', function() { btn_update_buildings() })
     $(document).on('click', '#btn_update_antenna', function() { btn_update_antenna() })
     

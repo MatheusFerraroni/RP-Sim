@@ -19,7 +19,7 @@
             <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#" id="btn_calculate_signal">Recalculate</span></a>
+                        <a class="nav-link" href="#" id="btn_calculate_signal">Calculate</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#" id="centermap">Center Map</span></a>
@@ -45,8 +45,9 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-toggle="dropdown" aria-expanded="false">View</a>
                         <div class="dropdown-menu" aria-labelledby="dropdown03">
-                            <a class="dropdown-item" href="#"> Amount of received  </a>
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal_charts"> Charts  </a>
+                            <a class="dropdown-item" href="#"> Amount of received </a>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal_charts"> Charts </a>
+                            <a class="dropdown-item" href="#" id="signal_or_ber"> BER </a>
                         </div>
                     </li>
                 </ul>
@@ -146,6 +147,12 @@
                             <p class="media-body pb-0 mb-0 small border-bottom border-gray">
                                 <strong class="d-block text-gray-dark">Transmission Power</strong>
                                 <a id="ptx_main_label">0</a> dBm
+                            </p>
+                        </div>
+                        <div class="media text-muted pt-1">
+                            <p class="media-body pb-0 mb-0 small border-bottom border-gray">
+                                <strong class="d-block text-gray-dark">Modulation</strong>
+                                <a id="modulation_main_label">0</a>
                             </p>
                         </div>
                     </div>
@@ -281,7 +288,7 @@
                         Noise Figure
                     </label>
                     <div class="col-sm-7">
-                        <input type="range" class="custom-range" id="noise_figure_range" min="0" max="100" value="5" step="1">
+                        <input type="range" class="custom-range" id="noise_figure_range" min="0" max="100" value="1" step="1">
                     </div>
                     <div class="col-sm-2">
                         <p class="d-inline" id="noise_figure_display">0</p> <p class="d-inline">DB</p>
@@ -361,6 +368,23 @@
                     </div>
                     <div class="col-sm-2">
                         <p class="d-inline" id="reception_gain_display">0</p> <p class="d-inline">DB</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label  class="col-sm-3 col-form-label">
+                        Modulation
+                    </label>
+                    <div class="col-sm-7">
+                        <div class="form-group">
+                            <select class="form-control" id="select_modulation">
+                                <option value="Pe_BPSK" selected>BPSK</option>
+                                <option value="Pe_8PSK" >8PSK</option>
+                                <option value="Pe_16PSK">16PSK</option>
+                                <option value="Pe_4QAM" >4QAM</option>
+                                <option value="Pe_16QAM">16QAM</option>
+                                <option value="Pe_64QAM">64QAM</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>

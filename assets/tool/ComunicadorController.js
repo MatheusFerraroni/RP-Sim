@@ -38,6 +38,11 @@ class Signal{
         this.temperature = 17
         this.noise_figure = 1
 
+        this.modulation = "Pe_BPSK"
+        this.modulation_str = "BPSK"
+
+        this.signal_or_ber = 1
+
         this.propagation_models = {}
         let l = new PropagationOnAir_FreeSpace()
         this.propagation_models[l.tipo] = {"modelo": l, "enable":true}
@@ -78,7 +83,7 @@ class Signal{
         return this.frequency*10**6
     }
     getFrequencyChannelHz(){
-        return this.frequency*10**6
+        return this.frequency_channel*10**6
     }
     dB_vezes(x){
         return 10**(x/10.0)
@@ -159,6 +164,9 @@ class Signal{
 
         $("#noise_figure_main_display").html(this.noise_figure)
         $("#noise_figure_display").html(this.noise_figure)
+        if(localComunicadorC!=null){
+            localComunicadorC.locals[myMap.getZoom()].map(function(e){ e.recalc_snr()})
+        }
     }
 
     updateFrequencyChannel(p){
@@ -168,12 +176,34 @@ class Signal{
         $("#frequency_channel_display").html(this.frequency_channel)
     }
 
+
+    updateModulation(p){
+        this.modulation = p
+        this.modulation_str = $('#select_modulation').find(":selected").text()
+        $("#modulation_main_label").html(this.modulation_str)
+    }
+
+    changeSignalBer(){
+        if(this.signal_or_ber==1){
+            this.signal_or_ber = 2
+            $("#signal_or_ber").html("Signal")
+        }else{
+            this.signal_or_ber = 1
+            $("#signal_or_ber").html("BER")
+        }
+
+        let dis = this
+        localComunicadorC.locals[myMap.getZoom()].map(function(e){e.draw_type=dis.signal_or_ber})
+    }
+
     setBindings(){
         this.updateFrequency(this.frequency)
         this.updateGtx(this.gtx)
         this.updatePtx(this.ptx)
         this.updateGrx(this.grx) 
         this.updateFrequencyChannel(this.frequency_channel)
+        this.updateModulation(this.modulation)
+        this.updateNoiseFigure(this.noise_figure)
 
         $("#tranmission_height_range").val(this.tx_antenna_height)
         this.updateTxHeight(this.tx_antenna_height)
@@ -184,7 +214,7 @@ class Signal{
         $("#temperature_range").val(this.temperature)
         this.updateTemperature(this.temperature)
 
-        $("#noise_figure_range").val(this.temperature)
+        $("#noise_figure_range").val(this.noise_figure)
         this.updateNoiseFigure(this.noise_figure)
 
 
@@ -231,9 +261,14 @@ class Signal{
         })
 
 
+        $(document).on('change', '#select_modulation', function(e) {
+            dis.updateModulation(e.target.value)
+        })
 
 
-
+        $(document).on('click', '#signal_or_ber', function(e) {
+            dis.changeSignalBer()
+        });
 
 
         // if(typeof myMap!="undefined" && myMap!=null){
@@ -495,27 +530,6 @@ class ComunicadorController{
         e = JSON.stringify(e)
         downloadFiler("communication_area.geojson",e)
     }
-
-    // computeAreasCoverage(){
-
-    //     let dis = this;
-    //     setTimeout(function() {
-    //         return function() {
-    //             let zoomAtual = myMap.getZoom()
-    //             let good = int($("#input_configcommunicationarea_bom").val())
-    //             let mid = int($("#input_configcommunicationarea_medio").val())
-    //             let bad = int($("#input_configcommunicationarea_ruim").val())
-
-
-    //             var reader = new jsts.io.WKTReader()
-    //             dis.area_comunicacao[zoomAtual] = {}
-    //             dis.area_comunicacao[zoomAtual][bad] = dis.computeAreasCoverageProcess(zoomAtual, bad, reader)
-    //             dis.area_comunicacao[zoomAtual][mid] = dis.computeAreasCoverageProcess(zoomAtual, mid, reader)
-    //             dis.area_comunicacao[zoomAtual][good] = dis.computeAreasCoverageProcess(zoomAtual, good, reader)
-    //         }
-    //     }(), 0);
-
-    // }
 
     computeAreasCoverageProcess(zoom, sinalLevel, reader){
 

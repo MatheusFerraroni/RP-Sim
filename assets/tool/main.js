@@ -110,9 +110,9 @@ function mouseSignal(){
     vertex(mouseX, mouseY);
     vertex(mouseX+10, mouseY-10);
     vertex(mouseX-10, mouseY-10);
-    vertex(mouseX-10, mouseY-30);
-    vertex(mouseX+55, mouseY-30);
-    vertex(mouseX+55, mouseY-10);
+    vertex(mouseX-10, mouseY-60);
+    vertex(mouseX+100, mouseY-60);
+    vertex(mouseX+100, mouseY-10);
     vertex(mouseX+20, mouseY-10);
     endShape(CLOSE);
     textSize(14);
@@ -121,6 +121,9 @@ function mouseSignal(){
 
     noStroke()
     text(s,mouseX+15, mouseY-20)
+
+    let ber = float(localmouse.snr_ber[SD.modulation].toExponential()).toPrecision(3)
+    text(ber,mouseX+15, mouseY-40)
 
 
     let cores = localmouse.getColorGradiente(localmouse.potencia_recepcao)
@@ -171,6 +174,9 @@ function preload(){
     localComunicadorC = new LocalComunicarController()
 
 
+    // let n = 0.00000001
+    // n = n.toPrecision(3)
+    // print(typeof(n), n)
 
     $(document).on('click', '#btn_update_buildings', function() { btn_update_buildings() })
     $(document).on('click', '#btn_update_antenna', function() { btn_update_antenna() })

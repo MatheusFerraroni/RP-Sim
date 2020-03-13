@@ -148,35 +148,110 @@ class Escala{
 
 
         fill(255)
-        rect(width-251,height-50,251,30)
+        rect(width-251,height-60,251,40)
 
         if(this.localbase==null){
             this.localbase = new LocalComunicar({lat:0,lng:0})
         }
 
-        textSize(10)
-        let gradiente = this.localbase.getGradiente()
-        fill(0)
-        for(let i=0;i>=-240;i-=2){
-            let valor = int(i/2)
 
-            let cores = this.localbase.getColorGradiente(valor)
-            let cor = this.localbase.pickRGB(gradiente[cores[0]],gradiente[cores[1]],valor)
-            stroke(cor[0], cor[1], cor[2])
-            let px = width-240-i
-            let py1 = height-32
-            let py2 = height-22
-            strokeWeight(2)
-            line(px, py1, px, py2)
-            px += -1
-            line(px, py1, px, py2)
+        if(SD.signal_or_ber==1){
 
-            strokeWeight(0)
-            stroke(0)
-            if(valor%10==0){
-                text(valor,px-7,py1-10)
+            textSize(10)
+            let gradiente = this.localbase.getGradiente()
+            fill(0)
+            for(let i=0;i>=-240;i-=2){
+                let valor = int(i/2)
+
+                let cores = this.localbase.getColorGradiente(valor)
+                let cor = this.localbase.pickRGB(gradiente[cores[0]],gradiente[cores[1]],valor)
+                stroke(cor[0], cor[1], cor[2])
+                let px = width-240-i
+                let py1 = height-32
+                let py2 = height-21
+                strokeWeight(2)
+                line(px, py1, px, py2)
+
+                strokeWeight(0)
+                stroke(0)
+                if(valor%10==0){
+                    text(valor,px-7,py1-5)
+
+
+                }
             }
+
+            text("Signal Received (dBw)",width-200,height-50)
+        }else if(SD.signal_or_ber==2){
+
+
+            textSize(10)
+            let gradiente = this.localbase.getGradienteBER()
+            fill(0)
+
+
+
+            for(let i=0;i>=-240;i-=2){
+                let valor = int(i/2)
+
+                let ber = snr_ber(valor)
+
+                valor = ber[SD.modulation]
+
+                let cores = this.localbase.getColorGradienteBER(valor)
+                let cor = this.localbase.pickRGBBER(gradiente[cores[0]],gradiente[cores[1]],valor)
+                stroke(cor[0], cor[1], cor[2])
+                let px = width-240-i
+                let py1 = height-32
+                let py2 = height-21
+                strokeWeight(2)
+                line(px, py1, px, py2)
+
+                strokeWeight(0)
+                stroke(0)
+                if(valor%10==0){
+                    text(valor,px-7,py1-5)
+
+
+                }
+            }
+            // a
+            text("Signal Received (dBw)",width-200,height-50)
         }
+
+
+        // let jaux = 0
+        // for(let i=-120;i>=-240;i-=4){
+        //     let valor = int(i/2)
+
+        //     let cores = this.localbase.getColorGradiente(valor)
+        //     let cor = this.localbase.pickRGB(gradiente[cores[0]],gradiente[cores[1]],valor)
+        //     stroke(cor[0], cor[1], cor[2])
+
+
+        //     let px,py1,py2
+        //     for(let j=0;j<4;j++){
+        //         jaux += 1
+        //         px = width-240-i-120+jaux
+        //         py1 = height-32
+        //         py2 = height-22
+        //         strokeWeight(2)
+        //         line(px+j, py1-38, px+j, py2-38)
+        //     }
+
+        //     strokeWeight(0)
+        //     stroke(0)
+        //     if(valor%10==0){
+        //         // text(valor,px-7,py1-45)
+        //         let r = snr_ber(valor)
+        //         let v = r[SD.modulation]
+        //         if (v>0){
+        //             v = float(v.toExponential()).toPrecision(3)
+        //         }
+        //         text(v,px-7,py1-45)
+        //     }
+        // }
+        // text("BER "+SD.modulation_str+" (%)",width-214,height-90)
     }
 
     toggleBigLine(){

@@ -28,6 +28,8 @@ class LocalComunicar{
 
         this.buildings_descartados = 0
         this.pos_cartesian = [x,y]
+
+        this.draw_type = SD.signal_or_ber
     }
 
     updatePosicaoDisplay(){
@@ -50,20 +52,22 @@ class LocalComunicar{
                 [-10,   [255,50,52  ]],
                 [0,     [255 , 255  , 255  ]],
         ]
-        // return [[-110 , [12  , 49  , 122 ]],
-        //         [-100,  [32  , 153 , 143 ]],
-        //         [-90,   [50  , 225 , 75  ]],
-        //         [-80,   [255 , 255 , 0   ]],
-        //         [-70,   [235 , 180 , 19  ]],
-        //         [-60,   [194 , 85  , 57  ]],
-        // ]
-        // return [[-110 ,[194 , 85  , 57 ]],
-        //         [-100,  [235 , 180 , 19 ]],
-        //         [-90,  [255 , 255 , 0 ]],
-        //         [-80,  [50  , 225 , 75 ]],
-        //         [-70 , [32  , 153 , 143 ]],
-        //         [-60,  [12  , 49  , 122 ]],
-        // ]
+    }
+
+    getGradienteBER(){
+        return [
+                [10**-16, [0  , 0  , 128 ]],
+                [10**-14, [0  , 0  , 160 ]],
+                [10**-12, [0  , 0  , 200 ]],
+                [10**-8,  [0, 1, 255  ]],
+                [10**-7,  [0, 129, 255  ]],
+                [10**-6,  [22, 255, 225  ]],
+                [10**-5,  [125, 255, 122  ]],
+                [10**-4,  [228, 255, 19  ]],
+                [10**-3,  [255, 148, 0  ]],
+                [10**-2,  [255, 30, 0  ]],
+                [5**-1,   [0 , 0  , 0  ]],
+        ]
     }
 
 
@@ -84,6 +88,23 @@ class LocalComunicar{
         let last = gradiente.length-1
         return [last,last]
     }
+    getColorGradienteBER(val){
+        let gradiente = this.getGradienteBER()
+        let startGradienteAt = 0
+        if(val<=gradiente[startGradienteAt][0]){
+            return [startGradienteAt,startGradienteAt]
+        }
+        let amt = gradiente.length
+
+        for(let i=startGradienteAt;i<amt;i++){
+            if(val<=gradiente[i][0]){
+                return [i-1,i]
+            }
+        }
+        let last = gradiente.length-1
+        return [last,last]
+    }
+
     pickRGB(color1, color2, weight){
         let div = 0
         if (color1[0]==color2[0]){
@@ -109,17 +130,56 @@ class LocalComunicar{
     }
 
 
+    pickRGBBER(color1, color2, weight){
+        let div = 0
+        if (color1[0]==color2[0]){
+            div = 1
+            // return color1
+        }else{
+            div = (color2[0]-color1[0])
+        }
+
+        weight = ((weight-color1[0])*100)/div
+        weight -= 100
+        weight *=-1
+        color1 = color1[1]
+        color2 = color2[1]
+        let p = weight
+        let w = p * 2 - 1
+        let w1 = (w/1+1) / 2/100
+        let w2 = 1 - w1
+        let rgb = [int(round(color1[0] * w1 + color2[0] * w2)),
+            int(round(color1[1] * w1 + color2[1] * w2)),
+            int(round(color1[2] * w1 + color2[2] * w2))]
+        return rgb
+    }
+
+
     draw(){
-        if(this.potencia_recepcao<-120) return
-        rectMode(CENTER);
-        let cores = this.getColorGradiente(this.potencia_recepcao)
-        let cor = this.pickRGB(this.getGradiente()[cores[0]],this.getGradiente()[cores[1]],this.potencia_recepcao)
+        if(this.draw_type ==1){
+            if(this.potencia_recepcao<-120) return
+            rectMode(CENTER);
+            let cores = this.getColorGradiente(this.potencia_recepcao)
+            let cor = this.pickRGB(this.getGradiente()[cores[0]],this.getGradiente()[cores[1]],this.potencia_recepcao)
 
 
-        fill("rgba("+cor[0]+", "+cor[1]+", "+cor[2]+",0.5)")
-        noStroke()
-        rect(this.posDisplay.x, this.posDisplay.y, this.sizeCell, this.sizeCell)
-        rectMode(CORNER);
+            fill("rgba("+cor[0]+", "+cor[1]+", "+cor[2]+",0.5)")
+            noStroke()
+            rect(this.posDisplay.x, this.posDisplay.y, this.sizeCell, this.sizeCell)
+            rectMode(CORNER);
+        }else if(this.draw_type==2){
+            if(this.potencia_recepcao<-120) return
+            rectMode(CENTER);
+            let cores = this.getColorGradienteBER(this.snr_ber[SD.modulation])
+            let cor = this.pickRGBBER(this.getGradienteBER()[cores[0]],this.getGradienteBER()[cores[1]],this.snr_ber[SD.modulation])
+            // console.log(this.snr_ber[SD.modulation],cores,cor)
+
+
+            fill("rgba("+cor[0]+", "+cor[1]+", "+cor[2]+",0.5)")
+            noStroke()
+            rect(this.posDisplay.x, this.posDisplay.y, this.sizeCell, this.sizeCell)
+            rectMode(CORNER);
+        }
 
     }
 
@@ -138,6 +198,11 @@ class LocalComunicar{
 
         this.potencia_recepcao = max(this.potencia_recepcao, newRecpt)
 
+        this.recalc_snr()
+    }
+
+    recalc_snr(){
+        this.snr_ber = snr_ber(this.potencia_recepcao)
     }
 
     clean(){

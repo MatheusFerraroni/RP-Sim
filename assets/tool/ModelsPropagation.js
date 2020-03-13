@@ -247,15 +247,13 @@ function snr_ber(received_dbw){
 
 
 
-    let BW = SD.getFrequencyHz()
-    BW = SD.getFrequencyChannelHz()
+    let BW = SD.getFrequencyChannelHz()
+    
     let Pn = No + SD.noise_figure + 10*Math.log10(BW)
 
     ret["noise_power_dBW"] = Pn
 
 
-    // let free = 20*Math.log10(dist)+20*Math.log10(SD.getFrequencyMhz())+32.45
-    // let PRx_dBw = SD.getPtxWatt() +  SD.gtx + SD.grx - free
     let PRx_dBw = received_dbw
     let SNR =  PRx_dBw - Pn
     let SNR_vezes = SD.dB_vezes(SNR)

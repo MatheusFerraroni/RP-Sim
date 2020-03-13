@@ -190,7 +190,6 @@ class Escala{
             fill(0)
 
 
-
             for(let i=0;i>=-240;i-=2){
                 let valor = int(i/2)
 
@@ -209,14 +208,18 @@ class Escala{
 
                 strokeWeight(0)
                 stroke(0)
-                if(valor%10==0){
-                    text(valor,px-7,py1-5)
+                if(int(i/2)%20==0){
 
+                    if(valor<0.48){
+                        if(valor!=0){
+                            valor = float(valor.toExponential()).toPrecision(3)
+                        }
+                        text(valor,px-7,py1-5)
+                    }
 
                 }
             }
-            // a
-            text("Signal Received (dBw)",width-200,height-50)
+            text("Bit Error Rate",width-220,height-50)
         }
 
 

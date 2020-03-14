@@ -392,7 +392,6 @@ class BasePropagationModel{
 
                 this.tipo = "okomurahata"
                 this.tipoCalculoDistancia = 1
-                this.type_scenery = 1
                 if(!supressHtml){
                     this.populateHTML()
                 }
@@ -432,20 +431,6 @@ class BasePropagationModel{
                                 </div>\
                             </div>\
                         </div>\
-                        <div class=\"row\">\
-                            <div class=\"col\">\
-                                Scenario Type\
-                            </div>\
-                        </div>\
-                        <div class=\"row\">\
-                            <div class=\"col\">\
-                                <select class=\"form-control\" id=\"select_okomurahata\">\
-                                    <option value=\"1\">Urban Scenario</option>\
-                                    <option value=\"2\">Suburban Scenario</option>\
-                                    <option value=\"3\">Rural Scenario</option>\
-                                </select>\
-                            </div>\
-                        </div>\
                     </a>"
 
                 $("#holder_list_propagation_openair").append(ne)
@@ -456,9 +441,6 @@ class BasePropagationModel{
                     dis.tipoCalculoDistancia = v
                 })
 
-                $("#select_okomurahata").change(function(){
-                    dis.type_scenery = int($("#select_okomurahata").val())
-                })
             }
 
             calculate(dist_out, dist_ins, amt_walls){
@@ -468,21 +450,6 @@ class BasePropagationModel{
                     dist_total = (dist_out) // kilometers
                 }else if(this.tipoCalculoDistancia==2){
                     dist_total = (dist_out+dist_ins) // kilometers
-                }
-
-                let a0=0
-                let a1=0
-                let a2=12
-                let a3=0.1
-                if (this.type_scenery==1){
-                   a0=36.2
-                   a1=30.2
-                }else if(this.type_scenery==2){
-                   a0=43.2
-                   a1=68.93
-                }else if(this.type_scenery==3){
-                   a0=45.95
-                   a1=100.6
                 }
 
 
@@ -502,6 +469,7 @@ class BasePropagationModel{
 
                 this.tipo = "ericsson"
                 this.tipoCalculoDistancia = 1
+                this.type_scenery = 1
                 if(!supressHtml){
                     this.populateHTML()
                 }
@@ -541,6 +509,20 @@ class BasePropagationModel{
                                 </div>\
                             </div>\
                         </div>\
+                        <div class=\"row\">\
+                            <div class=\"col\">\
+                                Scenario Type\
+                            </div>\
+                        </div>\
+                        <div class=\"row\">\
+                            <div class=\"col\">\
+                                <select class=\"form-control\" id=\"select_ericsson_scenary_type\">\
+                                    <option value=\"1\">Urban Scenario</option>\
+                                    <option value=\"2\">Suburban Scenario</option>\
+                                    <option value=\"3\">Rural Scenario</option>\
+                                </select>\
+                            </div>\
+                        </div>\
                     </a>"
 
                 $("#holder_list_propagation_openair").append(ne)
@@ -549,6 +531,9 @@ class BasePropagationModel{
                 $('input[name="ericsson_distance_calculation"]').change(function(e){
                     let v = int($('input[name="ericsson_distance_calculation"]:checked').val())
                     dis.tipoCalculoDistancia = v
+                })
+                $("#select_ericsson_scenary_type").change(function(){
+                    dis.type_scenery = int($("#select_ericsson_scenary_type").val())
                 })
             }
 
@@ -559,22 +544,20 @@ class BasePropagationModel{
                 }else if(this.tipoCalculoDistancia==2){
                     dist_total = (dist_out+dist_ins)/1000 // kilometers
                 }
-                let scenario = 1
                 let a0 = null
                 let a1 = null
                 let a2=12
                 let a3=0.1
-                if (scenario == 1){
+                if (this.type_scenery == 1){
                     a0=36.2
                     a1=30.2
-                }else if (scenario == 2){
+                }else if (this.type_scenery == 2){
                     a0=43.2
                     a1=68.93
-                }else if (scenario == 3){
+                }else if (this.type_scenery == 3){
                     a0=45.95
                     a1=100.6
                 }
-
 
                 let g = 44.49*Math.log10(SD.frequency)-4.78*((Math.log10(SD.frequency))**2)
                 let ericsson = a0 + a1*Math.log10(dist_total) + a2*Math.log10(SD.tx_antenna_height) + a3*Math.log10(SD.tx_antenna_height)*Math.log10(dist_total)-3.2*((Math.log10(11.75*SD.rx_antenna_height))**2)+ g
@@ -940,6 +923,101 @@ class BasePropagationModel{
 
                 f = jStat.gamma.sample( m, f / m);
                 f = SD.watt_to_dbm(f)
+
+                return f;
+            }
+        }
+
+        class PropagationOnAir_FixedDist extends PropagationOnAir {
+            constructor(supressHtml=false){
+                super()
+
+                this.tipo = "fixed_distance"
+                this.tipoCalculoDistancia = 1
+
+                this.distance_limit = 300
+
+                if(!supressHtml){
+                    this.populateHTML()
+                }
+            }
+
+            populateHTML(){
+
+                let ne = "\
+                    <a href=\"#\" class=\"list-group-item list-group-item-action flex-column align-items-start\">\
+                        <div class=\"d-flex w-100 justify-content-between\">\
+                            <h5 class=\"mb-1\">Fixed Distance</h5>\
+                            <small>\
+                                <input class=\"form-check-input input_enable_prop_model\" type=\"checkbox\" value=\"fixed_distance\">\
+                                <label class=\"form-check-label badge badge-danger chkbox_enable_propagation\" id=\"fixed_distance_label\">\
+                                    Disabled\
+                                </label>\
+                            </small>\
+                        </div>\
+                        <div class=\"row\">\
+                            <div class=\"col\">\
+                                Total distance calculation\
+                            </div>\
+                        </div>\
+                        <div class=\"row\">\
+                            <div class=\"col\">\
+                                <div class=\"form-check\">\
+                                    <input class=\"form-check-input\" type=\"radio\" name=\"fixed_distance_distance_calculation\" value=\"1\" checked>\
+                                    <label class=\"form-check-label\" for=\"fixed_distance_distance_calculation\">\
+                                        Total Distance = Distance on air\
+                                    </label>\
+                                </div>\
+                                <div class=\"form-check\">\
+                                    <input class=\"form-check-input\" type=\"radio\" name=\"fixed_distance_distance_calculation\" value=\"2\">\
+                                    <label class=\"form-check-label\" for=\"fixed_distance_distance_calculation\">\
+                                        Total Distance = Distance on air + Distance on obstacle\
+                                    </label>\
+                                </div>\
+                            </div>\
+                        </div>\
+                        <div class=\"row\">\
+                            <div class=\"col\">\
+                                Distance Limit (meters)\
+                            </div>\
+                        </div>\
+                        <div class=\"row\">\
+                            <div class=\"col\">\
+                                <input type=\"number\" class=\"form-control\" value=\""+this.distance_limit+"\" min=\"1\" max=\"3000\" step=\"1\" id=\"input_fixed_distance\">\
+                            </div>\
+                        </div>\
+                    </a>"
+
+
+                $("#holder_list_propagation_openair").append(ne)
+
+                let dis = this;
+                $('input[name="fixed_distance_distance_calculation"]').change(function(e){
+                    let v = int($('input[name="fixed_distance_distance_calculation"]:checked').val())
+                    dis.tipoCalculoDistancia = v
+                })
+                $('#input_fixed_distance').change(function(e){
+                    let v = int($('#input_fixed_distance').val())
+                    dis.distance_limit = v
+                })
+            }
+
+            calculate(dist_out, dist_ins, amt_walls){
+
+
+
+                let node_distance = null;
+                if(this.tipoCalculoDistancia==1){
+                    node_distance = (dist_out)
+                }else if(this.tipoCalculoDistancia==2){
+                    node_distance = (dist_out+dist_ins)
+                }
+
+                if(node_distance<=this.distance_limit){
+                    return -10;
+                }else{
+                  return -130;
+                }
 
                 return f;
             }

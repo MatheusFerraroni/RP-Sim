@@ -58,6 +58,8 @@ class Signal{
         this.propagation_models[l.tipo] = {"modelo": l, "enable":false}
         l = new PropagationOnAir_Nakagamim()
         this.propagation_models[l.tipo] = {"modelo": l, "enable":false}
+        l = new PropagationOnAir_FixedDist()
+        this.propagation_models[l.tipo] = {"modelo": l, "enable":false}
         l = new PropagationObstacle_PerMeter()
         this.propagation_models[l.tipo] = {"modelo": l, "enable":true}
         l = new PropagationCut_Amt()
@@ -662,7 +664,7 @@ class ComunicadorController{
                 let data_x = comunicadorController.niveis_sinal.map(function(e){ return e.total })
 
 
-                let m = max(data_x)
+                let m = data_x.reduce(function(a,b){ return a+b })
                 data_x = data_x.map(function(e){return e/m})
                 var myChart = new Chart(ctx, {
                     type: 'bar',
@@ -734,7 +736,7 @@ class ComunicadorController{
         let data_y = comunicadorController.niveis_sinal.map(function(e){ return str(e.value) })
         let data_x = comunicadorController.niveis_sinal.map(function(e){ return e.total })
 
-        let m = max(data_x)
+        let m = data_x.reduce(function(a,b){ return a+b })
         data_x = data_x.map(function(e){return e/m})
 
         var myChart = new Chart(ctx, {

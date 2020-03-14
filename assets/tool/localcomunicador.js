@@ -386,8 +386,8 @@ class LocalComunicarController{
     }
 
     updateSizeCell(s){
-        if(s%2==0) return
-        if(s<3) return
+        // if(s%2==0) return
+        // if(s<3) return
         let zoomAtual = myMap.getZoom()
         for(let i=0; i<this.locals[zoomAtual].length; i++){
             this.locals[zoomAtual][i].sizeCell = s

@@ -1,0 +1,31 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "antena/1"
+        },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.7420163,
+           -23.7059430
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "antena/2"
+        },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.7350000,
+           -23.7030000
+        ]
+      }
+    }
+  ]
+}

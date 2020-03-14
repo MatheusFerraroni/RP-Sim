@@ -307,42 +307,35 @@ function preload(){
 
 
 
-    // $(".toggle_charts").click(function(e){
-    //     $("#chart_here").toggle()
-    // })
 
 
 
 
 
 
-
-
-
-
-    $.get( "./data/pol_sp_ilha.geojson", function( data ) {
-        if (typeof(data)=="string"){
-            $("#buildings_loaded_hidden").val(data)
-        }else if(typeof(data)=="object"){
-            $("#buildings_loaded_hidden").val(JSON.stringify(data))
-        }else{
-            console.log("buildings",data)
-        }
+    // $.get( "./data/sp_buildings.geojson", function( data ) {
+    //     if (typeof(data)=="string"){
+    //         $("#buildings_loaded_hidden").val(data)
+    //     }else if(typeof(data)=="object"){
+    //         $("#buildings_loaded_hidden").val(JSON.stringify(data))
+    //     }else{
+    //         console.log("buildings",data)
+    //     }
         
-        $.get( "./data/antena_sp_ilha.geojson", function( data ) {
-            if (typeof(data)=="string"){
-                $("#antenna_loaded_hidden").val(data)
-            }else if(typeof(data)=="object"){
-                $("#antenna_loaded_hidden").val(JSON.stringify(data))
-            }else{
-                console.log("antena",data)
-            }
+    //     $.get( "./data/sp_antena.geojson", function( data ) {
+    //         if (typeof(data)=="string"){
+    //             $("#antenna_loaded_hidden").val(data)
+    //         }else if(typeof(data)=="object"){
+    //             $("#antenna_loaded_hidden").val(JSON.stringify(data))
+    //         }else{
+    //             console.log("antena",data)
+    //         }
 
-            btn_update_buildings()
-            btn_update_antenna()
+    //         btn_update_buildings()
+    //         btn_update_antenna()
             isLoadingSomething = false
-        })
-    })
+    //     })
+    // })
 
 }
 
@@ -409,11 +402,12 @@ function btn_update_buildings(){
 
     comunicadorController.area_comunicacao = {}
     centermap()
+    localComunicadorC.reloadLocaisToCheck()
 }
 
 function btn_update_antenna(){
     localComunicadorC.clearLocals()
-
+    antennaC.clear()
 
     let point_antennas = null
 
@@ -461,6 +455,8 @@ function btn_update_antenna(){
         alert("At least 1 antenna were not added.")
     }
     comunicadorController.area_comunicacao = {}
+    antennaC.updateDisplay()
+    localComunicadorC.reloadLocaisToCheck()
 }
 
 //                                                                        dddddddd                                                                                                                                                                                                        

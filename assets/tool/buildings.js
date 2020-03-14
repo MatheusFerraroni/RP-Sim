@@ -135,6 +135,10 @@ class BuildingsController{
     clear(){
         this.buildings = []
         this.ids_usados = {}
+        this.maxLat = -Infinity
+        this.maxLng = -Infinity
+        this.minLat = Infinity
+        this.minLng = Infinity
     }
 
     toggleDraw(){

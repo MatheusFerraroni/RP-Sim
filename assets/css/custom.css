@@ -49,3 +49,7 @@
     margin-top: 56px;
     width: calc(100% - 400px);
 }
+
+.modal-backdrop{
+    background-color: transparent !important;
+}

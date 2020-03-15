@@ -18,10 +18,10 @@
 // LLLLLLLLLLLLLLLLLLLLLLLL   ooooooooooo       cccccccccccccccc  aaaaaaaaaa  aaaallllllll        CCCCCCCCCCCCC   ooooooooooo   mmmmmm   mmmmmm   mmmmmm    uuuuuuuu  uuuu  nnnnnn    nnnnnniiiiiiii    cccccccccccccccc  aaaaaaaaaa  aaaa rrrrrrr            
 
 class LocalComunicar{
-    constructor(pos, x, y){
+    constructor(pos, x, y, cell_size){
         this.pos = pos
         this.updatePosicaoDisplay()
-        this.sizeCell = 5 // sizecell%2!=0 && sizecell>3
+        this.sizeCell = cell_size // sizecell%2!=0 && sizecell>3
         this.potencia_recepcao = -Infinity
 
         this.distancias = {}
@@ -288,6 +288,7 @@ class LocalComunicarController{
         this.mapMaxZoom = 20
         this.locals = []
 
+        this.cell_size = 5
         this.clearLocals()
     }
 
@@ -367,7 +368,7 @@ class LocalComunicarController{
             let pos_x = 0;
             ponto2 = {lat:ponto.lat, lng: ponto.lng}
             while(ponto2.lng<=maxLng){
-                this.locals[zoomAtual].push(new LocalComunicar(ponto2, pos_x, pos_y))
+                this.locals[zoomAtual].push(new LocalComunicar(ponto2, pos_x, pos_y, this.cell_size))
                 ponto2 = this.computeOffset(ponto2, dist_between_km, 90)
                 pos_x++;
             }
@@ -389,6 +390,7 @@ class LocalComunicarController{
         // if(s%2==0) return
         // if(s<3) return
         // let zoomAtual = myMap.getZoom()
+        this.cell_size = s
         for(let zoom=0;zoom<this.mapMaxZoom;zoom++){
             for(let i=0; i<this.locals[zoom].length; i++){
                 this.locals[zoom][i].sizeCell = s

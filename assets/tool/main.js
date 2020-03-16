@@ -166,6 +166,7 @@ function mouseSignal(){
 
 function preload(){
     SD = new Signal()
+
     antennaC = new AntennaController()
     buildingsC = new BuildingsController()
     comunicadorController = new ComunicadorController()
@@ -188,6 +189,7 @@ function preload(){
 
     $(document).on('click', '#export_communication_area', function(e){ comunicadorController.exportCommunicationArea() })
     $(document).on('click', '#export_communication_area_singlerun', function(e){ comunicadorController.compute_communication_area_singlerun() })
+    $(document).on('click', '#show_export_com', function(e){ SD.updateBERComunication() })
 
 
     $(document).on('click', '#centermap', function(e){ centermap() })

@@ -240,6 +240,7 @@ function calc_three_log_distance(node_distance){
 
 function snr_ber(received_dbw){
     let ret = {}
+
     let t_kelvin = SD.temperature + 273               
 
     let No_zero = 10*Math.log10(math.boltzmann.value)

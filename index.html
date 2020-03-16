@@ -38,7 +38,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown02" data-toggle="dropdown" aria-expanded="false">Export</a>
                         <div class="dropdown-menu" aria-labelledby="dropdown02">
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal_area_communication"> Communication Area </a>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal_area_communication" id="show_export_com"> Communication Area </a>
                             <a class="dropdown-item" href="#" onclick="salvarImagem()"> Figure </a>
                         </div>
                     </li>
@@ -118,7 +118,7 @@
                     <div class="col-sm">
                         <div class="media text-muted pt-1">
                             <p class="media-body pb-0 mb-0 small border-bottom border-gray">
-                                <strong class="d-block text-gray-dark">Band Frequency</strong>
+                                <strong class="d-block text-gray-dark">Frequency</strong>
                                 <a id="frequency_main_label">0</a> Mhz
                             </p>
                         </div>
@@ -138,7 +138,7 @@
                     <div class="col-sm">
                         <div class="media text-muted pt-1">
                             <p class="media-body pb-0 mb-0 small border-bottom border-gray">
-                                <strong class="d-block text-gray-dark">Channel Frequency</strong>
+                                <strong class="d-block text-gray-dark">Bandwidth</strong>
                                 <a id="frequency_channel_main_label">0</a> Mhz
                             </p>
                         </div>
@@ -316,10 +316,10 @@
 
                 <div class="form-group row">
                     <label  class="col-sm-3 col-form-label">
-                        Band Frequency
+                        Frequency
                     </label>
                     <div class="col-sm-7">
-                        <input type="range" class="custom-range" id="frequency_range" min="100" max="10000" value="5900" step="100">
+                        <input type="range" class="custom-range" id="frequency_range" min="100" max="6000" value="5900" step="100">
                     </div>
                     <div class="col-sm-2">
                         <p class="d-inline" id="frequency_display">0</p> <p class="d-inline">Mhz</p>
@@ -327,7 +327,7 @@
                 </div>
                 <div class="form-group row">
                     <label  class="col-sm-3 col-form-label">
-                        Channels Frequency
+                        Bandwidth
                     </label>
                     <div class="col-sm-7">
                         <input type="range" class="custom-range" id="frequency_channel_range" min="1" max="100" value="10" step="1">
@@ -579,6 +579,37 @@
                         <div class="col-sm">
                             <label for="input_mid" style="display: block">&nbsp</label>
                             <button type="button" class="btn btn-primary" id="export_communication_area">Export</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm">
+                            <label for="input_mid" style="display: block">&nbsp</label>
+                            <div class="form-group">
+                                <select class="form-control" id="select_modulation_export">
+                                    <option value="Pe_BPSK" selected>BPSK</option>
+                                    <option value="Pe_8PSK" >8PSK</option>
+                                    <option value="Pe_16PSK">16PSK</option>
+                                    <option value="Pe_4QAM" >4QAM</option>
+                                    <option value="Pe_16QAM">16QAM</option>
+                                    <option value="Pe_64QAM">64QAM</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <label for="ber_com_area_input_good">BER Good</label>
+                            <input type="number" class="form-control" id="ber_com_area_input_good" disabled>
+                        </div>
+                        <div class="col-sm">
+                            <label for="ber_com_area_input_mid">BER Medium</label>
+                            <input type="number" class="form-control" id="ber_com_area_input_mid" disabled>
+                        </div>
+                        <div class="col-sm">
+                            <label for="ber_com_area_input_bad">BER Bad</label>
+                            <input type="number" class="form-control" id="ber_com_area_input_bad" disabled>
                         </div>
                     </div>
                 </div>

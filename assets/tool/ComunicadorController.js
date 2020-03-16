@@ -207,6 +207,7 @@ class Signal{
         this.updateModulation(this.modulation)
         this.updateNoiseFigure(this.noise_figure)
 
+
         $("#tranmission_height_range").val(this.tx_antenna_height)
         this.updateTxHeight(this.tx_antenna_height)
 
@@ -273,6 +274,19 @@ class Signal{
         });
 
 
+        $(document).on('input change', "#export_com_area_input_good", function(e){
+            dis.updateBERComunication();
+        })
+        $(document).on('input change', "#export_com_area_input_mid", function(e){
+            dis.updateBERComunication();
+        })
+        $(document).on('input change', "#export_com_area_input_bad", function(e){
+            dis.updateBERComunication();
+        })
+        $("#select_modulation_export").on("change",function(){
+            dis.updateBERComunication();
+        })
+
         // if(typeof myMap!="undefined" && myMap!=null){
             // let zoomAtual = myMap.getZoom()
         //     if(localComunicadorC.locals[zoomAtual].length>0){
@@ -281,6 +295,21 @@ class Signal{
         //         }
         //     }
         // }
+
+    }
+
+    updateBERComunication(){
+        let good = int($("#export_com_area_input_good").val())
+        let mid = int($("#export_com_area_input_mid").val())
+        let bad = int($("#export_com_area_input_bad").val())
+        let mod = $('#select_modulation_export').find(":selected").val()
+
+        let ber = snr_ber(good)
+        $("#ber_com_area_input_good").val(ber[mod].toPrecision(3))
+        ber = snr_ber(mid)
+        $("#ber_com_area_input_mid").val(ber[mod].toPrecision(3))
+        ber = snr_ber(bad)
+        $("#ber_com_area_input_bad").val(ber[mod].toPrecision(3))
     }
 
     getDegradation(dist_fora, dist_dentro, quantidade_walls){

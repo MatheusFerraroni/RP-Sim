@@ -144,8 +144,7 @@ Configuration and control of the propagation models
 ## How to use it
 
 You can watch this quick video of how to use it :grinning: or you can read the tutorial below the video!
-[![Alt text](https://img.youtube.com/vi/VID/0.jpg)](https://www.youtube.com/watch?v=z59Plq7Yw34)
-
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=z59Plq7Yw34" target="_blank"><img src="http://img.youtube.com/vi/z59Plq7Yw34/0.jpg" alt="RP-Sim" width="240" height="180" border="10" /></a>
 
 
 ### Step by step of how to use it

@@ -9,6 +9,13 @@ RP-Sim is a completly free environment for simulate the propagation of wireless 
 </p>
 
 
+Access the demo here! [Live demo](https://matheusferraroni.github.io/RP-Sim/)
+
+
+## Requirements
+
+Browser :earth_americas:
+
 ## Functionalities
 
 
@@ -133,3 +140,30 @@ Configuration and control of the propagation models
   <img src="./Samples/config_models.PNG" width="738">
 </p>
 
+
+## How to use it
+
+You can watch this quick video of how to use it :grinning: or you can read the tutorial below the video!
+[![Alt text](https://img.youtube.com/vi/VID/0.jpg)](https://www.youtube.com/watch?v=z59Plq7Yw34)
+
+
+
+### Step by step of how to use it
+
+1. Clone the repository or download the zip
+2. Extract somewhere (Normally this work better if you are using a web development environment and extract in their folder to access from the browser (They need to be running..))
+3. Access RP-Sim typing the folder on the browser (Or localhost/RP-Sim if you are using a web development environment)
+(The version on github is shipped with 2 datasets you can use to test the tool!)
+4. Click on config buildings on the right menu
+5. Click on "Browse" and select the file `data/sp_buildings.geojson` and click on "Update".
+6. Click on config antenna on the right menu
+7. Click on "Browse" and select the file `data/sp_antenna.geojson` and click on "Update".
+8. You can play with the configurations of "Environment" and "Communication", but we sugest that you leave this as it is for the first run. So you can known the tool once you change it
+9. Click on calculate. Wait for a few seconds as the proccess is being done. This changes according with the zoom that you are using. More zoom means more granularity and slower processing
+10. Now you have a beatiful and colorfull map! Don't change the zoom and change the transmission power on the settings of communication
+11. Click on calculate again. If you you didn't change the zoom the processing now is really faster! The heavy processing is cached for each zoom 
+12. Click on "View" and "BER". Now the map change the colors and you can see the bit error rate estimated for each location
+13. You can click on "Environment" and change the value of "Noise Figure" and click on "Communication" and change the "Modulation". This will let you see easier this metric
+14. Click on "Export" and "Communication Area"
+15. Change the values for each area and click on export
+16. You've done almost everything cool! You can explore the rest now

@@ -144,7 +144,7 @@ Configuration and control of the propagation models
 ## How to use it
 
 Video with a presentation about RP-Sim and a demonstration (PT).
-<a href="https://www.youtube.com/watch?v=SZF-XMU0SHA" target="_blank"><img src="http://img.youtube.com/vi/z59Plq7Yw34/0.jpg" alt="RP-Sim" width="720" border="10" /></a>
+<a href="https://www.youtube.com/watch?v=SZF-XMU0SHA" target="_blank"><img src="http://img.youtube.com/vi/SZF-XMU0SHA/0.jpg" alt="RP-Sim" width="720" border="10" /></a>
 
 Video with a quick view of how to use it (no sound)
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=z59Plq7Yw34" target="_blank"><img src="http://img.youtube.com/vi/z59Plq7Yw34/0.jpg" alt="RP-Sim" width="720" border="10" /></a>

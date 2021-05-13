@@ -169,3 +169,27 @@ Video with a quick view of how to use it (no sound)
 14. Click on "Export" and "Communication Area"
 15. Change the values for each area and click on export
 16. You've done almost everything cool! You can explore the rest now
+
+## How to cite
+
+[Original Publication](https://sol.sbc.org.br/index.php/sbrc_estendido/article/view/12395)
+
+-   BibTeX
+> @inproceedings{sbrc_estendido,
+ author = {Matheus Sanches and Oscar Jaime  Coral and Leandro  Villas},
+ title = {RP-Sim: Radio Propagation Simulator},
+ booktitle = {Anais Estendidos do XXXVIII Simpósio Brasileiro de Redes de Computadores e Sistemas Distribuídos},
+ location = {Rio de Janeiro},
+ year = {2020},
+ keywords = {},
+ issn = {2177-9384},
+ pages = {1--8},
+ publisher = {SBC},
+ address = {Porto Alegre, RS, Brasil},
+ doi = {10.5753/sbrc_estendido.2020.12395},
+ url = {https://sol.sbc.org.br/index.php/sbrc_estendido/article/view/12395}
+}
+
+- ABNT
+
+> SANCHES, Matheus Ferraroni; CORAL, Oscar Jaime Ciceri ; VILLAS, Leandro Aparecido . RP-Sim: Radio Propagation Simulator. _In_: SALÃO DE FERRAMENTAS - SIMPÓSIO BRASILEIRO DE REDES DE COMPUTADORES E SISTEMAS DISTRIBUÍDOS (SBRC), 38. , 2020, Rio de Janeiro. **Anais** [...]. Porto Alegre: Sociedade Brasileira de Computação, 2020 . p. 1-8. ISSN 2177-9384. DOI: [https://doi.org/10.5753/sbrc_estendido.2020.12395](https://doi.org/10.5753/sbrc_estendido.2020.12395).
